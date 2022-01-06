@@ -3,6 +3,8 @@ html, body {
   padding: 0;
   border: 0;
   color: white;
+  width: 100%;
+  height: 100%;
 }
 
 input {
@@ -95,5 +97,48 @@ input[type="text"] {
 
 .car__block {
   margin-bottom: 10px;
+}
+
+.car__block-button {
+  margin-bottom: 10px;
+}
+
+.car__block-button span {
+  color: #e2b00a;
+}
+
+.car__block-buttonA, .car__block-buttonB {
+  border-radius: 5px;
+  padding: 3px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.car__block-buttonA {
+  background-color: black;
+  border: 1px solid #84d455;
+  color: #84d455;
+}
+
+.car__block-buttonB {
+  background-color: black;
+  border: 1px solid red;
+  color: red;
+}
+
+.car__block-img {
+  border-bottom: 1px dashed white;
+  position: relative;
+}
+
+.svg__car {
+  display: inline-block;
+  position: relative;
+}
+
+.flag__block {
+  position: absolute;
+  top: 0;
+  right: 7%;
 }
 /*# sourceMappingURL=style.css.map */
