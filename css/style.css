@@ -1,1 +1,83 @@
-/* No CSS *//*# sourceMappingURL=style.css.map */
+html, body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: white;
+}
+
+input {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  height: 25px;
+  border-radius: 5px;
+}
+
+input:input {
+  border: 0;
+}
+
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+}
+
+.container {
+  padding: 10px;
+}
+
+.button {
+  background-color: #84d455;
+  cursor: pointer;
+  padding: 5px;
+  text-transform: uppercase;
+  border: 0;
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+.button:hover {
+  background-color: #a3eb7a;
+}
+
+.button:active {
+  background-color: #6ea075;
+}
+
+.button-blue {
+  background-color: #39b8bd;
+  cursor: pointer;
+  padding: 5px;
+  text-transform: uppercase;
+  border: 0;
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+.button-blue:hover {
+  background-color: #78e0e4;
+}
+
+.button-blue:active {
+  background-color: #427475;
+}
+
+.button__view {
+  margin-bottom: 10px;
+}
+
+.input__create, .input__update {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 10px;
+}
+
+.color__car-create, .color__car-update {
+  margin: 0px 10px;
+}
+/*# sourceMappingURL=style.css.map */
