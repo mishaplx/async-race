@@ -14,6 +14,9 @@ input{
     border: 0;
   }
 }
+input[type="text"]{
+  padding-left: 10px;
+}
 $colorButton: rgb(132, 212, 85);
 $colorButtonHover: rgb(163, 235, 122);
 $colorButtonActive: rgb(110, 160, 117);
@@ -70,4 +73,14 @@ $colorblueButtonActive: rgb(66, 116, 117);
 .color__car-create, .color__car-update{
   margin: 0px 10px;
 }
-
+.garage{
+  .garage-title{
+    font-weight: 600;
+  }
+}
+.button__remove{
+  margin: 0 10px;
+}
+.car__block{
+  margin-bottom: 10px;
+}

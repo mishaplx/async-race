@@ -17,6 +17,10 @@ input:input {
   border: 0;
 }
 
+input[type="text"] {
+  padding-left: 10px;
+}
+
 .wrapper {
   width: 100vw;
   height: 100vh;
@@ -79,5 +83,17 @@ input:input {
 
 .color__car-create, .color__car-update {
   margin: 0px 10px;
+}
+
+.garage .garage-title {
+  font-weight: 600;
+}
+
+.button__remove {
+  margin: 0 10px;
+}
+
+.car__block {
+  margin-bottom: 10px;
 }
 /*# sourceMappingURL=style.css.map */
