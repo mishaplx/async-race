@@ -5,6 +5,13 @@ export default class Car{
     this.colorCar = colorCar;
     this.page = document.querySelector('.page');
     this.createBlockCar(this.nameCar, this.colorCar)
+    this.arrRes = [];
+    this.winner = document.querySelector('.button__view-winner')
+    this.winner.addEventListener('click', ()=>{
+
+      console.log(this.arrRes);
+    } 
+    )
   }
   start(){
     console.log('create block car');
@@ -90,15 +97,18 @@ export default class Car{
     buttonRemove.addEventListener('click',(event) =>{
       this.removeBlockCar(event.target)
     })
+    
     carButtonA.addEventListener('click',(event) =>{
       const parentNode = event.target.parentNode
       let left = 0
-      const speed = this.getRandom(1,5)
+      const speed = this.getRandom(1,10)
       const S = carImgBlock.offsetWidth;
+      const time = (S / 100 / speed).toFixed(2)
 
       console.log('speed: m/s ' + speed);
       console.log('S',carImgBlock.offsetWidth);
       console.log('time', ((S / 100 / speed)).toFixed(2));
+      this.arrRes.push(time)
 
       let x =  setInterval(() => {
         left = left + speed
@@ -113,7 +123,7 @@ export default class Car{
         let parentNode = event.target.parentNode
         clearInterval(x)
         parentNode.children[2].style.left =  `0%`;
-        
+        console.log('arres',this.arrRes);
       })
     })
  
