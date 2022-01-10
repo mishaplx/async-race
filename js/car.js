@@ -1,18 +1,13 @@
 export default class Car{
   constructor(nameCar, colorCar){
+    this.countAddEvent = 0;
     this.nameCar = nameCar;
     this.colorCar = colorCar;
     this.page = document.querySelector('.page');
     this.createBlockCar(this.nameCar, this.colorCar)
-    const garage = document.querySelector('.garage')
-    garage.addEventListener('click',(event) => {
-      if(event.target.className == 'button__remove button-blue'){
-       this.removeBlockCar(event.target);
-      }
-      if(event.target.className == 'button__select button-blue'){
-        this.disabledUpdate();
-       }
-    })
+  }
+  start(){
+    console.log('create block car');
   }
   createBlockCar(nameCar, colorCar){
     const carBlock = document.createElement('div')
@@ -64,7 +59,37 @@ export default class Car{
     carImgBlock.appendChild(flagSvg);
 
     this.page.appendChild(carBlock);
-    console.log(this.nameCar, this.colorCar);
+    let flag = 0
+    buttonSelect.addEventListener('click',(event) =>{
+      const page = document.querySelector('.page')
+      let parentNode =  event.target.parentNode.parentNode
+      parentNode.classList.toggle('active')
+      
+      
+      for (let i = 0; i < page.children.length; i++) {
+        if(page.children[i].className == 'car__block active') {
+          flag++
+        }
+      }
+      
+      let buttonUpdate = document.querySelector('.button__update')
+      if (flag == 2){
+        parentNode.classList.remove('active')
+        flag = 0
+      }
+      else{
+        this.disabledUpdate()
+      }
+      console.log(flag);
+     
+   
+      buttonUpdate.addEventListener('click', (event) => {
+        this.updateButton()
+      })
+    })
+    buttonRemove.addEventListener('click',(event) =>{
+      this.removeBlockCar(event.target)
+    })
     this.garageCount();
   }
 
@@ -131,20 +156,32 @@ export default class Car{
     
   }
   removeBlockCar(block){
+    console.log('remove');
     block.parentNode.parentNode.remove();
   }
-  disabledUpdate(){
-    console.log('1');
+  disabledUpdate() {
     let nameCarUpdate = document.querySelector('.name__car-update')
     let colorCarUpdate = document.querySelector('.color__car-update')
     let buttonUpdate = document.querySelector('.button__update')
     nameCarUpdate.disabled = !nameCarUpdate.disabled
     colorCarUpdate.disabled = !colorCarUpdate.disabled
     buttonUpdate.disabled = !buttonUpdate.disabled
-    
   }
-  updateButton(block){
-    let parentNode = block.parentNode.parentNode
-    console.log(parentNode);
+  updateButton(){
+    const page = document.querySelector('.page')
+    let nameCarUpdate = document.querySelector('.name__car-update')
+    let colorCarUpdate = document.querySelector('.color__car-update')
+    for (let i = 0; i < page.children.length; i++) {
+      if(page.children[i].className == 'car__block active') {
+        if (nameCarUpdate.value == ''){
+          alert('Entry name car!')
+          return
+        }
+        page.children[i].children[0].children[2].innerHTML = nameCarUpdate.value;
+        page.children[i].children[1].children[2].children[0].children[0].children[0].style.fill = colorCarUpdate.value
+        page.children[i].children[1].children[2].children[0].children[0].children[1].style.fill = colorCarUpdate.value
+        page.children[i].children[1].children[2].children[0].children[0].children[2].style.fill = colorCarUpdate.value
+      }
+    }
   }
 }
