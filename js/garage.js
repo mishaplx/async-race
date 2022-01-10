@@ -8,7 +8,9 @@ export default class Garage{
     this.inputColorCarCreate = document.querySelector('.color__car-create')
     this.updateButton = document.querySelector('.button__update')
     this.generateButton = document.querySelector('.button-menu-generate')
-    
+    this.raceButton = document.querySelector('.button-menu-race')
+    this.resetButton = document.querySelector('.button-menu-reset')
+    this.page = document.querySelector('.page')
     this.buttonCreate.addEventListener('click', () =>{
       const colorCar = this.getColorCreate();
       const nameCar = this.getNameCreate();
@@ -22,9 +24,34 @@ export default class Garage{
         i--
       }
     })
+    this.raceButton.addEventListener('click', () =>{
+      if (!this.page.children.length){
+        alert('Create car')
+      }
+      else{
+        this.raceAll();
+      }
+
+    })
+    this.resetButton.addEventListener('click', () =>{
+      this.resetAll();
+    })
    
   }
-
+raceAll(){
+  const buttonA = document.querySelectorAll('.car__block-buttonA')
+  for (let i = 0; i < buttonA.length; i++) {
+    buttonA[i].click();
+    
+  }
+}
+resetAll(){
+  const buttonB = document.querySelectorAll('.car__block-buttonB')
+  for (let i = 0; i < buttonB.length; i++) {
+    buttonB[i].click();
+    
+  }
+}
 getRandomColor(min,max){
   return Math.random() * (max - min) + min;
 }
@@ -43,8 +70,8 @@ getNameCreate(){
       alert('Entry name car!')
     }
   }
-  getRandomCarName(){
+getRandomCarName(){
 
-  }
+}
   
 }

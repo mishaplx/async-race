@@ -90,6 +90,33 @@ export default class Car{
     buttonRemove.addEventListener('click',(event) =>{
       this.removeBlockCar(event.target)
     })
+    carButtonA.addEventListener('click',(event) =>{
+      const parentNode = event.target.parentNode
+      let left = 0
+      const speed = this.getRandom(1,5)
+      const S = carImgBlock.offsetWidth;
+
+      console.log('speed: m/s ' + speed);
+      console.log('S',carImgBlock.offsetWidth);
+      console.log('time', ((S / 100 / speed)).toFixed(2));
+
+      let x =  setInterval(() => {
+        left = left + speed
+        parentNode.children[2].style.left = `${left}%`;
+       
+        if (parseInt(parentNode.children[2].style.left, 10) >= 90){
+          clearInterval(x)
+        }
+      }, 100);
+
+      carButtonB.addEventListener('click',(event) =>{
+        let parentNode = event.target.parentNode
+        clearInterval(x)
+        parentNode.children[2].style.left =  `0%`;
+        
+      })
+    })
+ 
     this.garageCount();
   }
 
@@ -183,5 +210,8 @@ export default class Car{
         page.children[i].children[1].children[2].children[0].children[0].children[2].style.fill = colorCarUpdate.value
       }
     }
+  }
+  getRandom(min,max){
+    return Math.floor(Math.random() * (max - min) + min);
   }
 }
