@@ -23,6 +23,7 @@ export default class Garage{
         const car = new Car(dataNameCar[this.getRandomName(0, dataNameCar.length)] ,`rgb(${this.getRandomColor(0,255)},${this.getRandomColor(0,255)},${this.getRandomColor(0,255)})`);
         i--
       }
+      
     })
     this.raceButton.addEventListener('click', () =>{
       if (!this.page.children.length){
@@ -38,6 +39,7 @@ export default class Garage{
     })
    
   }
+  
 raceAll(){
   const buttonA = document.querySelectorAll('.car__block-buttonA')
   for (let i = 0; i < buttonA.length; i++) {

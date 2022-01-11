@@ -125,3 +125,11 @@ $colorblueButtonActive: rgb(66, 116, 117);
   top: 0;
   right: 7%;
 }
+.pagination{
+  display: flex;
+}
+.page__number{
+  color: rgb(0, 204, 255);
+  margin: 0px 3px;
+  cursor: pointer;
+}

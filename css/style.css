@@ -145,4 +145,16 @@ input[type="text"] {
   top: 0;
   right: 7%;
 }
+
+.pagination {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.page__number {
+  color: #00ccff;
+  margin: 0px 3px;
+  cursor: pointer;
+}
 /*# sourceMappingURL=style.css.map */

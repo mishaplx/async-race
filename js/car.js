@@ -7,11 +7,20 @@ export default class Car{
     this.createBlockCar(this.nameCar, this.colorCar)
     this.arrRes = [];
     this.winner = document.querySelector('.button__view-winner')
+    this.paginationBlock = document.querySelector('.pagination')
+    if (this.paginationBlock.children.length !== 0){
+      this.paginationBlock.addEventListener('click',(event)=>{
+        if (event.target.className == 'page__number'){
+          alert('asofjh')
+        }
+      })
+    }
     this.winner.addEventListener('click', ()=>{
-
       console.log(this.arrRes);
-    } 
-    )
+    })
+    if (this.page.children.length > 7){
+      this.pagination()
+    }
   }
   start(){
     console.log('create block car');
@@ -101,20 +110,22 @@ export default class Car{
     carButtonA.addEventListener('click',(event) =>{
       const parentNode = event.target.parentNode
       let left = 0
-      const speed = this.getRandom(1,10)
+      const speed = this.getRandom(1,100)
       const S = carImgBlock.offsetWidth;
       const time = (S / 100 / speed).toFixed(2)
 
       console.log('speed: m/s ' + speed);
-      console.log('S',carImgBlock.offsetWidth);
+      console.log('Путь:',carImgBlock.offsetWidth);
       console.log('time', ((S / 100 / speed)).toFixed(2));
+      console.log('\n');
       this.arrRes.push(time)
+      console.log(this.arrRes);
 
       let x =  setInterval(() => {
         left = left + speed
-        parentNode.children[2].style.left = `${left}%`;
+        parentNode.children[2].style.left = `${left}px`;
        
-        if (parseInt(parentNode.children[2].style.left, 10) >= 90){
+        if (parseInt(parentNode.children[2].style.left, 10) >= carImgBlock.offsetWidth - speed - 100){
           clearInterval(x)
         }
       }, 100);
@@ -129,7 +140,26 @@ export default class Car{
  
     this.garageCount();
   }
-
+  pagination(){
+    this.paginationBlock.innerHTML = ''
+    let arrPage = []
+    let pageLength = this.page.children.length
+    
+    let i = 1
+    while(pageLength > 7){
+      arrPage.push(i)
+      i++;
+      pageLength = pageLength - 7
+    }
+    arrPage.forEach((el)=>{
+      let pageNumber = document.createElement('div');
+      pageNumber.className = 'page__number'
+      pageNumber.innerHTML = el
+      this.paginationBlock.appendChild(pageNumber)
+    })
+  
+    console.log(arrPage);
+  }
   appendSVG(color){
     let svgStr = `<svg version="1.1" id="Capa_1" width="40px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
     viewBox="0 0 404.243 404.243" style="enable-background:new 0 0 404.243 404.243;" xml:space="preserve">
