@@ -1,186 +1,181 @@
-export default class Car{
-  constructor(nameCar, colorCar){
+export default class Car {
+  constructor(nameCar, colorCar) {
     this.countAddEvent = 0;
     this.nameCar = nameCar;
     this.colorCar = colorCar;
-    this.page = document.querySelector('.page');
-    this.createBlockCar(this.nameCar, this.colorCar)
+    this.page = document.querySelector(".page");
+    this.createBlockCar(this.nameCar, this.colorCar);
     this.arrRes = [];
-    this.winner = document.querySelector('.button__view-winner')
-    this.paginationBlock = document.querySelector('.pagination')
-    if (this.paginationBlock.children.length !== 0){
-      this.paginationBlock.addEventListener('click',(event)=>{
-        if (event.target.className == 'page__number'){
-          alert('asofjh')
+    this.winner = document.querySelector(".button__view-winner");
+    this.paginationBlock = document.querySelector(".pagination");
+    if (this.paginationBlock.children.length !== 0) {
+      this.paginationBlock.addEventListener("click", event => {
+        if (event.target.className == "page__number") {
+          alert("asofjh");
         }
-      })
+      });
     }
-    this.winner.addEventListener('click', ()=>{
-      console.log(this.arrRes);
-    })
-    if (this.page.children.length > 7){
-      this.pagination()
+    this.winner.addEventListener("click", () => {
+     
+    });
+    if (this.page.children.length > 7) {
+      this.pagination();
     }
   }
-  async getUrl(){
-    let url = 'http://127.0.0.1:3000/garage'
-    let response = await fetch(url)
-    let commits = await response.json();
-    console.log(commits);
-  }
-  createBlockCar(nameCar, colorCar){
-    const carBlock = document.createElement('div')
-    carBlock.className = 'car__block'
 
-    const carButonBlock = document.createElement('div')
-    carButonBlock.className = 'car__block-button'
+  createBlockCar(nameCar, colorCar) {
+    const carBlock = document.createElement("div");
+    carBlock.className = "car__block";
 
-    const carButtonA = document.createElement('button')
-    carButtonA.className = 'car__block-buttonA'
-    carButtonA.innerHTML = 'A'
+    const carButonBlock = document.createElement("div");
+    carButonBlock.className = "car__block-button";
 
-    const carButtonB = document.createElement('button')
-    carButtonB.className = 'car__block-buttonB'
-    carButtonB.innerHTML = 'B'
+    const carButtonA = document.createElement("button");
+    carButtonA.className = "car__block-buttonA";
+    carButtonA.innerHTML = "A";
 
-    const carImgBlock = document.createElement('div')
-    carImgBlock.className = 'car__block-img'
+    const carButtonB = document.createElement("button");
+    carButtonB.className = "car__block-buttonB";
+    carButtonB.innerHTML = "B";
 
-    const buttonSelect = document.createElement('button')
-    buttonSelect.innerHTML = 'select';
-    buttonSelect.className = 'button__select button-blue'
+    const carImgBlock = document.createElement("div");
+    carImgBlock.className = "car__block-img";
 
-    const buttonRemove = document.createElement('button')
-    buttonRemove.innerHTML = 'remove';
-    buttonRemove.className = 'button__remove button-blue'
+    const buttonSelect = document.createElement("button");
+    buttonSelect.innerHTML = "select";
+    buttonSelect.className = "button__select button-blue";
 
-    const carNameBlock = document.createElement('span')
-    carNameBlock.className = 'name__car'
+    const buttonRemove = document.createElement("button");
+    buttonRemove.innerHTML = "remove";
+    buttonRemove.className = "button__remove button-blue";
+
+    const carNameBlock = document.createElement("span");
+    carNameBlock.className = "name__car";
     carNameBlock.innerHTML = nameCar;
-    const svgCar = document.createElement('div')
-    svgCar.className = 'svg__car'
-    svgCar.innerHTML = this.appendSVG(colorCar)
+    const svgCar = document.createElement("div");
+    svgCar.className = "svg__car";
+    svgCar.innerHTML = this.appendSVG(colorCar);
 
-    const flagSvg = document.createElement('div')
-    flagSvg.className = 'flag__block'
-    flagSvg.innerHTML = this.appendSvgFlag()
+    const flagSvg = document.createElement("div");
+    flagSvg.className = "flag__block";
+    flagSvg.innerHTML = this.appendSvgFlag();
 
-    carButonBlock.appendChild(buttonSelect)
-    carButonBlock.appendChild(buttonRemove)
-    carButonBlock.appendChild(carNameBlock)
+    carButonBlock.appendChild(buttonSelect);
+    carButonBlock.appendChild(buttonRemove);
+    carButonBlock.appendChild(carNameBlock);
 
-    carBlock.appendChild(carButonBlock)
+    carBlock.appendChild(carButonBlock);
     carBlock.appendChild(carImgBlock);
-    
-    carImgBlock.appendChild(carButtonA)
-    carImgBlock.appendChild(carButtonB)
-    carImgBlock.appendChild(svgCar)
+
+    carImgBlock.appendChild(carButtonA);
+    carImgBlock.appendChild(carButtonB);
+    carImgBlock.appendChild(svgCar);
     carImgBlock.appendChild(flagSvg);
 
     this.page.appendChild(carBlock);
-    let flag = 0
-    buttonSelect.addEventListener('click',(event) =>{
-      const page = document.querySelector('.page')
-      let parentNode =  event.target.parentNode.parentNode
-      parentNode.classList.toggle('active')
-      
-      
+    let flag = 0;
+    buttonSelect.addEventListener("click", event => {
+      const page = document.querySelector(".page");
+      let parentNode = event.target.parentNode.parentNode;
+      parentNode.classList.toggle("active");
+
       for (let i = 0; i < page.children.length; i++) {
-        if(page.children[i].className == 'car__block active') {
-          flag++
+        if (page.children[i].className == "car__block active") {
+          flag++;
         }
       }
-      
-      let buttonUpdate = document.querySelector('.button__update')
-      if (flag == 2){
-        parentNode.classList.remove('active')
-        flag = 0
-      }
-      else{
-        this.disabledUpdate()
-      }
-      
-     
-   
-      buttonUpdate.addEventListener('click', (event) => {
-        this.updateButton()
-      })
-    })
-    buttonRemove.addEventListener('click',(event) =>{
-      this.removeBlockCar(event.target)
-      this.garageCount(false);
-    })
-    
-    carButtonA.addEventListener('click',(event) =>{
-      const parentNode = event.target.parentNode
-      let left = 0
-      const speed = this.getRandom(1,100)
-      const S = carImgBlock.offsetWidth;
-      const time = (S / 100 / speed).toFixed(2)
 
-      console.log('speed: m/s ' + speed);
-      console.log('Путь:',carImgBlock.offsetWidth);
-      console.log('time', ((S / 100 / speed)).toFixed(2));
-      console.log('\n');
-      this.arrRes.push(time)
+      let buttonUpdate = document.querySelector(".button__update");
+      if (flag == 2) {
+        parentNode.classList.remove("active");
+        flag = 0;
+      } else {
+        this.disabledUpdate();
+      }
+
+      buttonUpdate.addEventListener("click", event => {
+        this.updateButton();
+      });
+    });
+    buttonRemove.addEventListener("click", event => {
+      this.removeBlockCar(event.target);
+      this.garageCount(false);
+    });
+
+    carButtonA.addEventListener("click", event => {
+      const parentNode = event.target.parentNode;
+      let left = 0;
+      const speed = this.getRandom(1, 100);
+      const S = carImgBlock.offsetWidth;
+      const time = (S / 100 / speed).toFixed(2);
+
+      console.log("speed: m/s " + speed);
+      console.log("Путь:", carImgBlock.offsetWidth);
+      console.log("time", (S / 100 / speed).toFixed(2));
+      console.log("\n");
+      this.arrRes.push(time);
       console.log(this.arrRes);
 
-      let x =  setInterval(() => {
-        left = left + speed
+      let x = setInterval(() => {
+        left = left + speed;
         parentNode.children[2].style.left = `${left}px`;
-       
-        if (parseInt(parentNode.children[2].style.left, 10) >= carImgBlock.offsetWidth - speed - 100){
-          clearInterval(x)
+
+        if (
+          parseInt(parentNode.children[2].style.left, 10) >=
+          carImgBlock.offsetWidth - speed - 100
+        ) {
+          clearInterval(x);
         }
       }, 100);
 
-      carButtonB.addEventListener('click',(event) =>{
-        let parentNode = event.target.parentNode
-        clearInterval(x)
-        parentNode.children[2].style.left =  `0%`;
-        console.log('arres',this.arrRes);
-      })
-    })
- 
+      carButtonB.addEventListener("click", event => {
+        let parentNode = event.target.parentNode;
+        clearInterval(x);
+        parentNode.children[2].style.left = `0%`;
+        
+      });
+    });
+
     this.garageCount(true);
-    this.createCar()
+    this.createCar();
   }
-  async createCar(){
-    let url = 'http://127.0.0.1:3000/garage'
+  async createCar() {
+    let url = "http://127.0.0.1:3000/garage";
 
     let dataParams = {
       name: this.nameCar,
-      color: this.colorCar
-    }
-    let response = await fetch(url,{
-       method: "POST",
-       headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dataParams)})
+      color: this.colorCar,
+    };
+    let response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataParams),
+    });
     let result = await response.json();
   }
-  pagination(){
-    this.paginationBlock.innerHTML = ''
-    let arrPage = []
-    let pageLength = this.page.children.length
-    
-    let i = 1
-    while(pageLength > 7){
-      arrPage.push(i)
+  pagination() {
+    this.paginationBlock.innerHTML = "";
+    let arrPage = [];
+    let pageLength = this.page.children.length;
+
+    let i = 1;
+    while (pageLength > 7) {
+      arrPage.push(i);
       i++;
-      pageLength = pageLength - 7
+      pageLength = pageLength - 7;
     }
-    arrPage.forEach((el)=>{
-      let pageNumber = document.createElement('div');
-      pageNumber.className = 'page__number'
-      pageNumber.innerHTML = el
-      this.paginationBlock.appendChild(pageNumber)
-    })
-  
-    console.log(arrPage);
+    arrPage.forEach(el => {
+      let pageNumber = document.createElement("div");
+      pageNumber.className = "page__number";
+      pageNumber.innerHTML = el;
+      this.paginationBlock.appendChild(pageNumber);
+    });
+
+    
   }
-  appendSVG(color){
+  appendSVG(color) {
     let svgStr = `<svg version="1.1" id="Capa_1" width="40px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
     viewBox="0 0 404.243 404.243" style="enable-background:new 0 0 404.243 404.243;" xml:space="preserve">
  <g>
@@ -207,10 +202,10 @@ export default class Car{
      l-8.761-11.738l0.001,0.001c-12.25-16.415-31.008-26.409-51.466-27.419c-0.164-0.008-0.329-0.012-0.493-0.012H171.34
      c-5.522,0-10,4.477-10,10v35.15C161.34,181.101,165.817,185.578,171.34,185.578z M181.34,150.428h18.087
      c12.53,0.679,24.146,6.123,32.632,15.15H181.34V150.428z"/>
- </svg>`
- return svgStr
+ </svg>`;
+    return svgStr;
   }
-  appendSvgFlag(){
+  appendSvgFlag() {
     let str = `<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
     width="37.979px" height="37.979px" viewBox="0 0 37.979 37.979" style="enable-background:new 0 0 37.979 37.979;"
     xml:space="preserve">
@@ -232,103 +227,116 @@ export default class Car{
      c-2.046-0.751-3.95-1.005-5.772-0.964c-0.508-1.792-1.016-3.583-1.521-5.375c1.82-0.041,3.727,0.213,5.771,0.964
      C33.817,14.739,34.326,16.53,34.833,18.322z"/>
  </g>
- </svg>`
- return str
+ </svg>`;
+    return str;
   }
-  garageCount(flag){
-    let garageCount = document.querySelector('.garage-count')
-    let count = Number(garageCount.innerHTML)
-    if(flag){
-      count++
-    }
-    else{
-      count--
+  garageCount(flag) {
+    let garageCount = document.querySelector(".garage-count");
+    let count = Number(garageCount.innerHTML);
+    if (flag) {
+      count++;
+    } else {
+      count--;
     }
     garageCount.innerHTML = count;
   }
-  removeBlockCar(block){
+  removeBlockCar(block) {
     block.parentNode.parentNode.remove();
-    const nameCar = block.parentNode.children[2].innerHTML
-    const colorCar = block.parentNode.parentNode.children[1].children[2].children[0].children[0].children[0].style.fill
+    const nameCar = block.parentNode.children[2].innerHTML;
+    const colorCar =
+      block.parentNode.parentNode.children[1].children[2].children[0]
+        .children[0].children[0].style.fill;
     this.removeCar(nameCar, colorCar);
   }
-  async removeCar(nameCar, colorCar){
-    let color = `#${this.getHexRGBColor(colorCar)}`
-    console.log(color);
-    let url = 'http://127.0.0.1:3000/garage';
+  async removeCar(nameCar, colorCar) {
+    let color = `#${this.getHexRGBColor(colorCar)}`;
+    let url = "http://127.0.0.1:3000/garage";
     let response = await fetch(url);
-    const data = await response.json()
-    data.forEach((el)=>{
-      if (el.name === nameCar && el.color === color){
-        let url = `http://127.0.0.1:3000/garage/${el.id}`
-        fetch(url,{method:"DELETE"});
+    const data = await response.json();
+    data.forEach(el => {
+      if (el.name === nameCar && el.color === color) {
+        let url = `http://127.0.0.1:3000/garage/${el.id}`;
+        fetch(url, { method: "DELETE" });
       }
-    })
-
+    });
   }
-  getHexRGBColor(color){
-    color = color.replace(/\s/g,"");
-  let aRGB = color.match(/^rgb\((\d{1,3}[%]?),(\d{1,3}[%]?),(\d{1,3}[%]?)\)$/i);
-  if(aRGB){
-    color = '';
-    for (var i=1;  i<=3; i++) color += Math.round((aRGB[i][aRGB[i].length-1]=="%"?2.55:1)*parseInt(aRGB[i])).toString(16).replace(/^(.)$/,'0$1');
-  } else color = color.replace(/^#?([\da-f])([\da-f])([\da-f])$/i, '$1$1$2$2$3$3');
-  return color;
+  getHexRGBColor(color) {
+    color = color.replace(/\s/g, "");
+    let aRGB = color.match(
+      /^rgb\((\d{1,3}[%]?),(\d{1,3}[%]?),(\d{1,3}[%]?)\)$/i
+    );
+    if (aRGB) {
+      color = "";
+      for (var i = 1; i <= 3; i++)
+        color += Math.round(
+          (aRGB[i][aRGB[i].length - 1] == "%" ? 2.55 : 1) * parseInt(aRGB[i])
+        )
+          .toString(16)
+          .replace(/^(.)$/, "0$1");
+    } else
+      color = color.replace(/^#?([\da-f])([\da-f])([\da-f])$/i, "$1$1$2$2$3$3");
+    return color;
   }
   disabledUpdate() {
-    let nameCarUpdate = document.querySelector('.name__car-update')
-    let colorCarUpdate = document.querySelector('.color__car-update')
-    let buttonUpdate = document.querySelector('.button__update')
-    nameCarUpdate.disabled = !nameCarUpdate.disabled
-    colorCarUpdate.disabled = !colorCarUpdate.disabled
-    buttonUpdate.disabled = !buttonUpdate.disabled
+    let nameCarUpdate = document.querySelector(".name__car-update");
+    let colorCarUpdate = document.querySelector(".color__car-update");
+    let buttonUpdate = document.querySelector(".button__update");
+    nameCarUpdate.disabled = !nameCarUpdate.disabled;
+    colorCarUpdate.disabled = !colorCarUpdate.disabled;
+    buttonUpdate.disabled = !buttonUpdate.disabled;
   }
-  updateButton(){
-    const page = document.querySelector('.page')
-    let nameCarUpdate = document.querySelector('.name__car-update')
-    let colorCarUpdate = document.querySelector('.color__car-update')
+  updateButton() {
+    const page = document.querySelector(".page");
+    let nameCarUpdate = document.querySelector(".name__car-update");
+    let colorCarUpdate = document.querySelector(".color__car-update");
     for (let i = 0; i < page.children.length; i++) {
-      if(page.children[i].className == 'car__block active') {
-        if (nameCarUpdate.value == ''){
-          alert('Entry name car!')
-          return
+      if (page.children[i].className == "car__block active") {
+        if (nameCarUpdate.value == "") {
+          alert("Entry name car!");
+          return;
         }
-        let nameCar = page.children[i].children[0].children[2].innerHTML
-        let colorCar = page.children[i].children[1].children[2].children[0].children[0].children[0].style.fill
-        this.updateCar(nameCar, colorCar)
-        page.children[i].children[0].children[2].innerHTML = nameCarUpdate.value;
-        page.children[i].children[1].children[2].children[0].children[0].children[0].style.fill = colorCarUpdate.value
-        page.children[i].children[1].children[2].children[0].children[0].children[1].style.fill = colorCarUpdate.value
-        page.children[i].children[1].children[2].children[0].children[0].children[2].style.fill = colorCarUpdate.value
+        let nameCar = page.children[i].children[0].children[2].innerHTML;
+        let colorCar =
+          page.children[i].children[1].children[2].children[0].children[0]
+            .children[0].style.fill;
+        this.updateCar(nameCar, colorCar);
+        page.children[i].children[0].children[2].innerHTML =
+          nameCarUpdate.value;
+        page.children[i].children[1].children[2].children[0].children[0].children[0].style.fill =
+          colorCarUpdate.value;
+        page.children[i].children[1].children[2].children[0].children[0].children[1].style.fill =
+          colorCarUpdate.value;
+        page.children[i].children[1].children[2].children[0].children[0].children[2].style.fill =
+          colorCarUpdate.value;
       }
     }
   }
-  async updateCar(nameCar, colorCar){
-    let color = `#${this.getHexRGBColor(colorCar)}`
-    let data = {
-      name: nameCar,
-      color: color
-    }
-    let url = 'http://127.0.0.1:3000/garage';
+  async updateCar(nameCar, colorCar) {
+    let nameCarUpdate = document.querySelector(".name__car-update");
+    let colorCarUpdate = document.querySelector(".color__car-update");
+    let color = `#${this.getHexRGBColor(colorCar)}`;
+    let obj = {
+      name: nameCarUpdate.value,
+      color: colorCarUpdate.value,
+    };
+    let url = "http://127.0.0.1:3000/garage";
     let response = await fetch(url);
-    const data1 = await response.json()
-    data1.forEach((el)=> {
-      if (el.name === nameCar && el.color === color){
-        console.log(el.id);
-        let url = `http://127.0.0.1:3000/garage`
-        fetch(url,{
-          method:"POST",
+    const data = await response.json();
+    data.forEach(el => {
+      if (el.name === nameCar && el.color === color) {
+        
+        let url = `http://127.0.0.1:3000/garage/${el.id}`;
+        fetch(url, {
+          method: "PUT",
           headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: nameCar,
-          color: color
-        })});
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(obj),
+        });
       }
-    })
+    });
   }
-  getRandom(min,max){
+  getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   }
 }
