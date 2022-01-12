@@ -19,7 +19,8 @@ export default class Garage{
     this.generateButton.addEventListener('click', () =>{
       let i = 5;
       while(i !== 0){
-        const car = new Car(dataNameCar[this.getRandomName(0, dataNameCar.length)] ,`rgb(${Math.floor(this.getRandomColor(0,255))},${Math.floor(this.getRandomColor(0,255))},${Math.floor(this.getRandomColor(0,255))})`);
+        let color = `rgb(${Math.floor(this.getRandomColor(0,255))},${Math.floor(this.getRandomColor(0,255))},${Math.floor(this.getRandomColor(0,255))})`
+        const car = new Car(dataNameCar[this.getRandomName(0, dataNameCar.length)], `#${this.getHexRGBColor(color)}`);
         i--
       }
       
@@ -38,7 +39,23 @@ export default class Garage{
     })
    
   }
-  
+  getHexRGBColor(color) {
+    color = color.replace(/\s/g, "");
+    let aRGB = color.match(
+      /^rgb\((\d{1,3}[%]?),(\d{1,3}[%]?),(\d{1,3}[%]?)\)$/i
+    );
+    if (aRGB) {
+      color = "";
+      for (var i = 1; i <= 3; i++)
+        color += Math.round(
+          (aRGB[i][aRGB[i].length - 1] == "%" ? 2.55 : 1) * parseInt(aRGB[i])
+        )
+          .toString(16)
+          .replace(/^(.)$/, "0$1");
+    } else
+      color = color.replace(/^#?([\da-f])([\da-f])([\da-f])$/i, "$1$1$2$2$3$3");
+    return color;
+  }
 raceAll(){
   const buttonA = document.querySelectorAll('.car__block-buttonA')
   for (let i = 0; i < buttonA.length; i++) {
