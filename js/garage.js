@@ -15,12 +15,11 @@ export default class Garage{
       const colorCar = this.getColorCreate();
       const nameCar = this.getNameCreate();
       const car = new Car(nameCar, colorCar);
-     car.start();
     })
     this.generateButton.addEventListener('click', () =>{
       let i = 5;
       while(i !== 0){
-        const car = new Car(dataNameCar[this.getRandomName(0, dataNameCar.length)] ,`rgb(${this.getRandomColor(0,255)},${this.getRandomColor(0,255)},${this.getRandomColor(0,255)})`);
+        const car = new Car(dataNameCar[this.getRandomName(0, dataNameCar.length)] ,`rgb(${Math.floor(this.getRandomColor(0,255))},${Math.floor(this.getRandomColor(0,255))},${Math.floor(this.getRandomColor(0,255))})`);
         i--
       }
       

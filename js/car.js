@@ -22,8 +22,11 @@ export default class Car{
       this.pagination()
     }
   }
-  start(){
-    console.log('create block car');
+  async getUrl(){
+    let url = 'http://127.0.0.1:3000/garage'
+    let response = await fetch(url)
+    let commits = await response.json();
+    console.log(commits);
   }
   createBlockCar(nameCar, colorCar){
     const carBlock = document.createElement('div')
@@ -96,7 +99,7 @@ export default class Car{
       else{
         this.disabledUpdate()
       }
-      console.log(flag);
+      
      
    
       buttonUpdate.addEventListener('click', (event) => {
@@ -105,6 +108,7 @@ export default class Car{
     })
     buttonRemove.addEventListener('click',(event) =>{
       this.removeBlockCar(event.target)
+      this.garageCount(false);
     })
     
     carButtonA.addEventListener('click',(event) =>{
@@ -138,7 +142,23 @@ export default class Car{
       })
     })
  
-    this.garageCount();
+    this.garageCount(true);
+    this.createCar()
+  }
+  async createCar(){
+    let url = 'http://127.0.0.1:3000/garage'
+
+    let dataParams = {
+      name: this.nameCar,
+      color: this.colorCar
+    }
+    let response = await fetch(url,{
+       method: "POST",
+       headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataParams)})
+    let result = await response.json();
   }
   pagination(){
     this.paginationBlock.innerHTML = ''
@@ -215,16 +235,45 @@ export default class Car{
  </svg>`
  return str
   }
-  garageCount(){
+  garageCount(flag){
     let garageCount = document.querySelector('.garage-count')
     let count = Number(garageCount.innerHTML)
-    count++
+    if(flag){
+      count++
+    }
+    else{
+      count--
+    }
     garageCount.innerHTML = count;
-    
   }
   removeBlockCar(block){
-    console.log('remove');
     block.parentNode.parentNode.remove();
+    const nameCar = block.parentNode.children[2].innerHTML
+    const colorCar = block.parentNode.parentNode.children[1].children[2].children[0].children[0].children[0].style.fill
+    this.removeCar(nameCar, colorCar);
+  }
+  async removeCar(nameCar, colorCar){
+    let color = `#${this.getHexRGBColor(colorCar)}`
+    console.log(color);
+    let url = 'http://127.0.0.1:3000/garage';
+    let response = await fetch(url);
+    const data = await response.json()
+    data.forEach((el)=>{
+      if (el.name === nameCar && el.color === color){
+        let url = `http://127.0.0.1:3000/garage/${el.id}`
+        fetch(url,{method:"DELETE"});
+      }
+    })
+
+  }
+  getHexRGBColor(color){
+    color = color.replace(/\s/g,"");
+  let aRGB = color.match(/^rgb\((\d{1,3}[%]?),(\d{1,3}[%]?),(\d{1,3}[%]?)\)$/i);
+  if(aRGB){
+    color = '';
+    for (var i=1;  i<=3; i++) color += Math.round((aRGB[i][aRGB[i].length-1]=="%"?2.55:1)*parseInt(aRGB[i])).toString(16).replace(/^(.)$/,'0$1');
+  } else color = color.replace(/^#?([\da-f])([\da-f])([\da-f])$/i, '$1$1$2$2$3$3');
+  return color;
   }
   disabledUpdate() {
     let nameCarUpdate = document.querySelector('.name__car-update')
@@ -244,12 +293,35 @@ export default class Car{
           alert('Entry name car!')
           return
         }
-        page.children[i].children[0].children[2].innerHTML = nameCarUpdate.value;
+        let nameCar = page.children[i].children[0].children[2].innerHTML
+        let colorCar = page.children[i].children[1].children[2].children[0].children[0].children[0].style.fill
+        this.updateCar(nameCar, colorCar)
+        nameCar = nameCarUpdate.value;
         page.children[i].children[1].children[2].children[0].children[0].children[0].style.fill = colorCarUpdate.value
         page.children[i].children[1].children[2].children[0].children[0].children[1].style.fill = colorCarUpdate.value
         page.children[i].children[1].children[2].children[0].children[0].children[2].style.fill = colorCarUpdate.value
       }
     }
+  }
+  async updateCar(nameCar, colorCar){
+    let color = `#${this.getHexRGBColor(colorCar)}`
+    let dataParams = {
+      name: nameCar,
+      color: color
+    }
+    let url = 'http://127.0.0.1:3000/garage';
+    let response = await fetch(url);
+    const data = await response.json()
+    data.forEach((el)=>{
+      if (el.name === nameCar && el.color === color){
+        let url = `http://127.0.0.1:3000/garage/${el.id}`
+        let res = fetch(url,{method:"PUT", headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataParams)});
+        console.log(res);
+      }
+    })
   }
   getRandom(min,max){
     return Math.floor(Math.random() * (max - min) + min);
