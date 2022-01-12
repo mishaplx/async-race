@@ -296,7 +296,7 @@ export default class Car{
         let nameCar = page.children[i].children[0].children[2].innerHTML
         let colorCar = page.children[i].children[1].children[2].children[0].children[0].children[0].style.fill
         this.updateCar(nameCar, colorCar)
-        nameCar = nameCarUpdate.value;
+        page.children[i].children[0].children[2].innerHTML = nameCarUpdate.value;
         page.children[i].children[1].children[2].children[0].children[0].children[0].style.fill = colorCarUpdate.value
         page.children[i].children[1].children[2].children[0].children[0].children[1].style.fill = colorCarUpdate.value
         page.children[i].children[1].children[2].children[0].children[0].children[2].style.fill = colorCarUpdate.value
@@ -305,21 +305,26 @@ export default class Car{
   }
   async updateCar(nameCar, colorCar){
     let color = `#${this.getHexRGBColor(colorCar)}`
-    let dataParams = {
+    let data = {
       name: nameCar,
       color: color
     }
     let url = 'http://127.0.0.1:3000/garage';
     let response = await fetch(url);
-    const data = await response.json()
-    data.forEach((el)=>{
+    const data1 = await response.json()
+    data1.forEach((el)=> {
       if (el.name === nameCar && el.color === color){
-        let url = `http://127.0.0.1:3000/garage/${el.id}`
-        let res = fetch(url,{method:"PUT", headers: {
+        console.log(el.id);
+        let url = `http://127.0.0.1:3000/garage`
+        fetch(url,{
+          method:"POST",
+          headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(dataParams)});
-        console.log(res);
+        body: JSON.stringify({
+          name: nameCar,
+          color: color
+        })});
       }
     })
   }
