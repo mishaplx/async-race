@@ -25,12 +25,12 @@ export default class Garage{
       }
       
     })
-    this.raceButton.addEventListener('click', () =>{
+    this.raceButton.addEventListener('click', (event) =>{
       if (!this.page.children.length){
         alert('Create car')
       }
       else{
-        this.raceAll();
+        this.raceAll(event.target);
       }
 
     })
@@ -56,11 +56,11 @@ export default class Garage{
       color = color.replace(/^#?([\da-f])([\da-f])([\da-f])$/i, "$1$1$2$2$3$3");
     return color;
   }
-raceAll(){
+raceAll(event){
   const buttonA = document.querySelectorAll('.car__block-buttonA')
   for (let i = 0; i < buttonA.length; i++) {
     buttonA[i].click();
-    
+    console.log(event);
   }
 }
 resetAll(){

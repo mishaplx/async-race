@@ -178,22 +178,26 @@ export default class Car {
       
     }
       this.paginationBlock.addEventListener("click", event => {
+        // const buttonB = document.querySelectorAll('.car__block-buttonB')
+        // for (let i = 0; i < buttonB.length; i++) {
+        //   buttonB[i].click();
+        // }
         if (event.target.className == "page__number") {
           const pageCount = document.querySelector('.page-count')
           const numberPage = Number(event.target.innerHTML)
           pageCount.innerHTML = numberPage
           if (numberPage === 1){
             for (let i = 0; i < this.page.children.length; i++) {
-              if(i >= 6){
+              if(i >= 7){
                 this.page.children[i].classList.add('hide')
               } else { this.page.children[i].classList.remove('hide')}
               
             }
           }
           else{
-            
+            //debugger
             for (let i = 0; i < this.page.children.length; i++) {
-              if(i > 7 * (numberPage-1) && i <= 7 * numberPage){
+              if(i >= 7 * (numberPage-1) && i <= 7 * numberPage - 1){
                 this.page.children[i].classList.remove('hide')
               } else { this.page.children[i].classList.add('hide')}
              }
@@ -269,6 +273,11 @@ export default class Car {
     garageCount.innerHTML = count;
   }
   removeBlockCar(block) {
+    debugger
+    const nextNode = block.parentNode.parentNode.nextSibling
+    console.log(nextNode);
+    
+    
     block.parentNode.parentNode.remove();
     const nameCar = block.parentNode.children[2].innerHTML;
     const colorCar =
