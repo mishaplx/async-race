@@ -8,13 +8,7 @@ export default class Car {
     this.arrRes = [];
     this.winner = document.querySelector(".button__view-winner");
     this.paginationBlock = document.querySelector(".pagination");
-    if (this.paginationBlock.children.length !== 0) {
-      this.paginationBlock.addEventListener("click", event => {
-        if (event.target.className == "page__number") {
-          alert("asofjh");
-        }
-      });
-    }
+    
     this.winner.addEventListener("click", () => {
      
     });
@@ -159,20 +153,54 @@ export default class Car {
     this.paginationBlock.innerHTML = "";
     let arrPage = [];
     let pageLength = this.page.children.length;
-
+//debugger
     let i = 1;
     while (pageLength > 7) {
       arrPage.push(i);
       i++;
       pageLength = pageLength - 7;
+      if (pageLength < 7) {
+        arrPage.push(i);
+      }
     }
+    let remainderBlock = pageLength
     arrPage.forEach(el => {
       let pageNumber = document.createElement("div");
       pageNumber.className = "page__number";
       pageNumber.innerHTML = el;
       this.paginationBlock.appendChild(pageNumber);
     });
-
+    for (let i = 0; i < this.page.children.length; i++) {
+      if (i >= 7){
+        console.log('none');
+        this.page.children[i].classList.add('hide')
+      }
+      
+    }
+      this.paginationBlock.addEventListener("click", event => {
+        if (event.target.className == "page__number") {
+          const pageCount = document.querySelector('.page-count')
+          const numberPage = Number(event.target.innerHTML)
+          pageCount.innerHTML = numberPage
+          if (numberPage === 1){
+            for (let i = 0; i < this.page.children.length; i++) {
+              if(i >= 6){
+                this.page.children[i].classList.add('hide')
+              } else { this.page.children[i].classList.remove('hide')}
+              
+            }
+          }
+          else{
+            
+            for (let i = 0; i < this.page.children.length; i++) {
+              if(i > 7 * (numberPage-1) && i <= 7 * numberPage){
+                this.page.children[i].classList.remove('hide')
+              } else { this.page.children[i].classList.add('hide')}
+             }
+          }
+          
+        }
+      });
     
   }
   appendSVG(color) {
