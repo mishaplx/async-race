@@ -273,10 +273,9 @@ export default class Car {
     garageCount.innerHTML = count;
   }
   removeBlockCar(block) {
-    debugger
-    const nextNode = block.parentNode.parentNode.nextSibling
-    console.log(nextNode);
     
+    const nextNode = block.parentNode.parentNode.nextSibling
+    this.checkNextSibling(nextNode)
     
     block.parentNode.parentNode.remove();
     const nameCar = block.parentNode.children[2].innerHTML;
@@ -284,6 +283,13 @@ export default class Car {
       block.parentNode.parentNode.children[1].children[2].children[0]
         .children[0].children[0].style.fill;
     this.removeCar(nameCar, colorCar);
+  }
+  checkNextSibling(nextNode){
+    if (nextNode.className == 'car__block hide'){
+      nextNode.className = 'car__block';
+    }
+    else { this.checkNextSibling(nextNode.nextSibling)}
+    console.log(nextNode);
   }
   async removeCar(nameCar, colorCar) {
     let color = `#${this.getHexRGBColor(colorCar)}`;
