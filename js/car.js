@@ -8,10 +8,8 @@ export default class Car {
     this.arrRes = [];
     this.winner = document.querySelector(".button__view-winner");
     this.paginationBlock = document.querySelector(".pagination");
-    
-    this.winner.addEventListener("click", () => {
-     
-    });
+
+    this.winner.addEventListener("click", () => {});
     if (this.page.children.length > 7) {
       this.pagination();
     }
@@ -92,8 +90,10 @@ export default class Car {
       });
     });
     buttonRemove.addEventListener("click", event => {
+      debugger;
       this.removeBlockCar(event.target);
       this.garageCount(false);
+      this.checkPagination();
     });
 
     carButtonA.addEventListener("click", event => {
@@ -126,34 +126,18 @@ export default class Car {
         let parentNode = event.target.parentNode;
         clearInterval(x);
         parentNode.children[2].style.left = `0%`;
-        
       });
     });
 
     this.garageCount(true);
     this.createCar();
   }
-  async createCar() {
-    let url = "http://127.0.0.1:3000/garage";
-
-    let dataParams = {
-      name: this.nameCar,
-      color: this.colorCar,
-    };
-    let response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataParams),
-    });
-    let result = await response.json();
-  }
-  pagination() {
+  checkPagination() {
+    debugger
     this.paginationBlock.innerHTML = "";
     let arrPage = [];
     let pageLength = this.page.children.length;
-//debugger
+
     let i = 1;
     while (pageLength > 7) {
       arrPage.push(i);
@@ -163,7 +147,36 @@ export default class Car {
         arrPage.push(i);
       }
     }
-    let remainderBlock = pageLength
+
+    arrPage.forEach(el => {
+      let pageNumber = document.createElement("div");
+      pageNumber.className = "page__number";
+      pageNumber.innerHTML = el;
+      this.paginationBlock.appendChild(pageNumber);
+    });
+    // for (let i = 0; i < this.page.children.length; i++) {
+    //   if (i >= 7) {
+    //     //console.log('none');
+    //     this.page.children[i].classList.add("hide");
+    //   }
+    // }
+  }
+
+  pagination() {
+    this.paginationBlock.innerHTML = "";
+    let arrPage = [];
+    let pageLength = this.page.children.length;
+    //debugger
+    let i = 1;
+    while (pageLength > 7) {
+      arrPage.push(i);
+      i++;
+      pageLength = pageLength - 7;
+      if (pageLength < 7) {
+        arrPage.push(i);
+      }
+    }
+
     arrPage.forEach(el => {
       let pageNumber = document.createElement("div");
       pageNumber.className = "page__number";
@@ -171,41 +184,40 @@ export default class Car {
       this.paginationBlock.appendChild(pageNumber);
     });
     for (let i = 0; i < this.page.children.length; i++) {
-      if (i >= 7){
-        console.log('none');
-        this.page.children[i].classList.add('hide')
+      if (i >= 7) {
+        console.log("none");
+        this.page.children[i].classList.add("hide");
       }
-      
     }
-      this.paginationBlock.addEventListener("click", event => {
-        // const buttonB = document.querySelectorAll('.car__block-buttonB')
-        // for (let i = 0; i < buttonB.length; i++) {
-        //   buttonB[i].click();
-        // }
-        if (event.target.className == "page__number") {
-          const pageCount = document.querySelector('.page-count')
-          const numberPage = Number(event.target.innerHTML)
-          pageCount.innerHTML = numberPage
-          if (numberPage === 1){
-            for (let i = 0; i < this.page.children.length; i++) {
-              if(i >= 7){
-                this.page.children[i].classList.add('hide')
-              } else { this.page.children[i].classList.remove('hide')}
-              
+    this.paginationBlock.addEventListener("click", event => {
+      // const buttonB = document.querySelectorAll('.car__block-buttonB')
+      // for (let i = 0; i < buttonB.length; i++) {
+      //   buttonB[i].click();
+      // }
+      if (event.target.className == "page__number") {
+        const pageCount = document.querySelector(".page-count");
+        const numberPage = Number(event.target.innerHTML);
+        pageCount.innerHTML = numberPage;
+        if (numberPage === 1) {
+          for (let i = 0; i < this.page.children.length; i++) {
+            if (i >= 7) {
+              this.page.children[i].classList.add("hide");
+            } else {
+              this.page.children[i].classList.remove("hide");
             }
           }
-          else{
-            //debugger
-            for (let i = 0; i < this.page.children.length; i++) {
-              if(i >= 7 * (numberPage-1) && i <= 7 * numberPage - 1){
-                this.page.children[i].classList.remove('hide')
-              } else { this.page.children[i].classList.add('hide')}
-             }
+        } else {
+          //debugger
+          for (let i = 0; i < this.page.children.length; i++) {
+            if (i >= 7 * (numberPage - 1) && i <= 7 * numberPage - 1) {
+              this.page.children[i].classList.remove("hide");
+            } else {
+              this.page.children[i].classList.add("hide");
+            }
           }
-          
         }
-      });
-    
+      }
+    });
   }
   appendSVG(color) {
     let svgStr = `<svg version="1.1" id="Capa_1" width="40px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -273,10 +285,10 @@ export default class Car {
     garageCount.innerHTML = count;
   }
   removeBlockCar(block) {
-    
-    const nextNode = block.parentNode.parentNode.nextSibling
-    this.checkNextSibling(nextNode)
-    
+    debugger;
+    const nextNode = block.parentNode.parentNode.nextSibling;
+    this.checkNextSibling(nextNode);
+
     block.parentNode.parentNode.remove();
     const nameCar = block.parentNode.children[2].innerHTML;
     const colorCar =
@@ -284,50 +296,20 @@ export default class Car {
         .children[0].children[0].style.fill;
     this.removeCar(nameCar, colorCar);
   }
-  checkNextSibling(nextNode){
-    if (nextNode.className == 'car__block hide'){
-      nextNode.className = 'car__block';
+  checkNextSibling(nextNode) {
+    debugger;
+    if (nextNode == null) {
+      return;
     }
-    else { this.checkNextSibling(nextNode.nextSibling)}
-    console.log(nextNode);
+    if (nextNode.className == "car__block hide") {
+      nextNode.className = "car__block";
+    } else {
+      this.checkNextSibling(nextNode.nextSibling);
+    }
+    //console.log(nextNode);
   }
-  async removeCar(nameCar, colorCar) {
-    let color = `#${this.getHexRGBColor(colorCar)}`;
-    let url = "http://127.0.0.1:3000/garage";
-    let response = await fetch(url);
-    const data = await response.json();
-    data.forEach(el => {
-      if (el.name === nameCar && el.color === color) {
-        let url = `http://127.0.0.1:3000/garage/${el.id}`;
-        fetch(url, { method: "DELETE" });
-      }
-    });
-  }
-  getHexRGBColor(color) {
-    color = color.replace(/\s/g, "");
-    let aRGB = color.match(
-      /^rgb\((\d{1,3}[%]?),(\d{1,3}[%]?),(\d{1,3}[%]?)\)$/i
-    );
-    if (aRGB) {
-      color = "";
-      for (var i = 1; i <= 3; i++)
-        color += Math.round(
-          (aRGB[i][aRGB[i].length - 1] == "%" ? 2.55 : 1) * parseInt(aRGB[i])
-        )
-          .toString(16)
-          .replace(/^(.)$/, "0$1");
-    } else
-      color = color.replace(/^#?([\da-f])([\da-f])([\da-f])$/i, "$1$1$2$2$3$3");
-    return color;
-  }
-  disabledUpdate() {
-    let nameCarUpdate = document.querySelector(".name__car-update");
-    let colorCarUpdate = document.querySelector(".color__car-update");
-    let buttonUpdate = document.querySelector(".button__update");
-    nameCarUpdate.disabled = !nameCarUpdate.disabled;
-    colorCarUpdate.disabled = !colorCarUpdate.disabled;
-    buttonUpdate.disabled = !buttonUpdate.disabled;
-  }
+
+  
   updateButton() {
     const page = document.querySelector(".page");
     let nameCarUpdate = document.querySelector(".name__car-update");
@@ -345,14 +327,48 @@ export default class Car {
         this.updateCar(nameCar, colorCar);
         page.children[i].children[0].children[2].innerHTML =
           nameCarUpdate.value;
-        page.children[i].children[1].children[2].children[0].children[0].children[0].style.fill =
+        page.children[
+          i
+        ].children[1].children[2].children[0].children[0].children[0].style.fill =
           colorCarUpdate.value;
-        page.children[i].children[1].children[2].children[0].children[0].children[1].style.fill =
+        page.children[
+          i
+        ].children[1].children[2].children[0].children[0].children[1].style.fill =
           colorCarUpdate.value;
-        page.children[i].children[1].children[2].children[0].children[0].children[2].style.fill =
+        page.children[
+          i
+        ].children[1].children[2].children[0].children[0].children[2].style.fill =
           colorCarUpdate.value;
       }
     }
+  }
+  async createCar() {
+    let url = "http://127.0.0.1:3000/garage";
+
+    let dataParams = {
+      name: this.nameCar,
+      color: this.colorCar,
+    };
+    let response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataParams),
+    });
+    let result = await response.json();
+  }
+  async removeCar(nameCar, colorCar) {
+    let color = `#${this.getHexRGBColor(colorCar)}`;
+    let url = "http://127.0.0.1:3000/garage";
+    let response = await fetch(url);
+    const data = await response.json();
+    data.forEach(el => {
+      if (el.name === nameCar && el.color === color) {
+        let url = `http://127.0.0.1:3000/garage/${el.id}`;
+        fetch(url, { method: "DELETE" });
+      }
+    });
   }
   async updateCar(nameCar, colorCar) {
     let nameCarUpdate = document.querySelector(".name__car-update");
@@ -367,7 +383,6 @@ export default class Car {
     const data = await response.json();
     data.forEach(el => {
       if (el.name === nameCar && el.color === color) {
-        
         let url = `http://127.0.0.1:3000/garage/${el.id}`;
         fetch(url, {
           method: "PUT",
@@ -378,6 +393,31 @@ export default class Car {
         });
       }
     });
+  }
+  disabledUpdate() {
+    let nameCarUpdate = document.querySelector(".name__car-update");
+    let colorCarUpdate = document.querySelector(".color__car-update");
+    let buttonUpdate = document.querySelector(".button__update");
+    nameCarUpdate.disabled = !nameCarUpdate.disabled;
+    colorCarUpdate.disabled = !colorCarUpdate.disabled;
+    buttonUpdate.disabled = !buttonUpdate.disabled;
+  }
+  getHexRGBColor(color) {
+    color = color.replace(/\s/g, "");
+    let aRGB = color.match(
+      /^rgb\((\d{1,3}[%]?),(\d{1,3}[%]?),(\d{1,3}[%]?)\)$/i
+    );
+    if (aRGB) {
+      color = "";
+      for (var i = 1; i <= 3; i++)
+        color += Math.round(
+          (aRGB[i][aRGB[i].length - 1] == "%" ? 2.55 : 1) * parseInt(aRGB[i])
+        )
+          .toString(16)
+          .replace(/^(.)$/, "0$1");
+    } else
+      color = color.replace(/^#?([\da-f])([\da-f])([\da-f])$/i, "$1$1$2$2$3$3");
+    return color;
   }
   getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
