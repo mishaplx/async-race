@@ -11,6 +11,12 @@ export default class Garage{
     this.raceButton = document.querySelector('.button-menu-race')
     this.resetButton = document.querySelector('.button-menu-reset')
     this.page = document.querySelector('.page')
+    this.garage = document.querySelector('.garage')
+    this.winnersButton = document.querySelector('.button__view-winner ')
+    this.garageButton = document.querySelector('.button__view-garage')
+    this.inpUpdate = document.querySelector('.input__update')
+    this.inpCreate = document.querySelector('.input__create')
+    this.buttonMenu = document.querySelector('.button-menu')
     this.buttonCreate.addEventListener('click', () =>{
       const colorCar = this.getColorCreate();
       const nameCar = this.getNameCreate();
@@ -37,7 +43,18 @@ export default class Garage{
     this.resetButton.addEventListener('click', () =>{
       this.resetAll();
     })
-   
+    this.winnersButton.addEventListener('click', () =>{
+      this.garage.style.display = 'none';
+      this.inpUpdate.style.display = 'none'
+      this.inpCreate.style.display = 'none'
+      this.buttonMenu.style.display = 'none'
+    })
+    this.garageButton.addEventListener('click', () =>{
+      this.garage.style.display = 'block';
+      this.inpUpdate.style.display = 'block'
+      this.inpCreate.style.display = 'block'
+      this.buttonMenu.style.display = 'block'
+    })
   }
   getHexRGBColor(color) {
     color = color.replace(/\s/g, "");
@@ -60,7 +77,7 @@ raceAll(event){
   const buttonA = document.querySelectorAll('.car__block-buttonA')
   for (let i = 0; i < buttonA.length; i++) {
     buttonA[i].click();
-    console.log(event);
+   
   }
 }
 resetAll(){

@@ -1,3 +1,5 @@
+import Winner from "./winner.js";
+
 export default class Car {
   constructor(nameCar, colorCar) {
     this.countAddEvent = 0;
@@ -97,18 +99,27 @@ export default class Car {
     });
 
     carButtonA.addEventListener("click", event => {
+      let winner = {}
+      let nameCar = event.target.parentNode.parentNode.children[0].children[2].innerHTML
+      let carSvg = event.target.parentNode.parentNode.children[1].children[2]
+      console.log(carSvg);
+     
       const parentNode = event.target.parentNode;
       let left = 0;
       const speed = this.getRandom(1, 100);
       const S = carImgBlock.offsetWidth;
       const time = (S / 100 / speed).toFixed(2);
-
-      console.log("speed: m/s " + speed);
-      console.log("Путь:", carImgBlock.offsetWidth);
-      console.log("time", (S / 100 / speed).toFixed(2));
-      console.log("\n");
+      winner.time = Number(time);
+      winner.name = nameCar;
+      winner.carSvg = carSvg;
+      const winnerClass = new Winner(winner); 
+     // console.log("speed: m/s " + speed);
+     // console.log("Путь:", carImgBlock.offsetWidth);
+     // console.log("time", (S / 100 / speed).toFixed(2));
+    //  console.log("\n");
       this.arrRes.push(time);
-      console.log(this.arrRes);
+//console.log(this.arrRes);
+
 
       let x = setInterval(() => {
         left = left + speed;
