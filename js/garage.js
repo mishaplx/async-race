@@ -65,7 +65,7 @@ export default class Garage{
     state.forEach((el)=>{
       const car = new Car(el.name, el.color)
     })
-    console.log(state);
+    //console.log(state);
    // while(i !== 0){
     //  const car = new Car(state[i].name, state[i].color);
     //  i--

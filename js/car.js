@@ -1,5 +1,5 @@
 import Winner from "./winner.js";
-import { removeCar } from './server.js'
+import { removeCar, updateCar } from './server.js'
 export default class Car {
   constructor(nameCar, colorCar) {
     this.countAddEvent = 0;
@@ -334,7 +334,8 @@ this.winTable = []
         let colorCar =
           page.children[i].children[1].children[2].children[0].children[0]
             .children[0].style.fill;
-        this.updateCar(nameCar, colorCar);
+            console.log(colorCar);
+        updateCar(nameCar, this.getHexRGBColor(colorCar));
         page.children[i].children[0].children[2].innerHTML =
           nameCarUpdate.value;
         page.children[
@@ -352,43 +353,24 @@ this.winTable = []
       }
     }
   }
- 
-  async removeCar(nameCar, colorCar) {
-    let color = `#${this.getHexRGBColor(colorCar)}`;
+  async createCar() {
     let url = "http://127.0.0.1:3000/garage";
-    let response = await fetch(url);
-    const data = await response.json();
-    data.forEach(el => {
-      if (el.name === nameCar && el.color === color) {
-        let url = `http://127.0.0.1:3000/garage/${el.id}`;
-        fetch(url, { method: "DELETE" });
-      }
-    });
-  }
-  async updateCar(nameCar, colorCar) {
-    let nameCarUpdate = document.querySelector(".name__car-update");
-    let colorCarUpdate = document.querySelector(".color__car-update");
-    let color = `#${this.getHexRGBColor(colorCar)}`;
-    let obj = {
-      name: nameCarUpdate.value,
-      color: colorCarUpdate.value,
+
+    let dataParams = {
+      name: this.nameCar,
+      color: this.colorCar,
     };
-    let url = "http://127.0.0.1:3000/garage";
-    let response = await fetch(url);
-    const data = await response.json();
-    data.forEach(el => {
-      if (el.name === nameCar && el.color === color) {
-        let url = `http://127.0.0.1:3000/garage/${el.id}`;
-        fetch(url, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(obj),
-        });
-      }
+    let response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataParams),
     });
+    let result = await response.json();
   }
+  
+
   async writeWinner(winner){
     let url = "http://127.0.0.1:3000/winners";
 
