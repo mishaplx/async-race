@@ -136,3 +136,20 @@ $colorblueButtonActive: rgb(66, 116, 117);
   margin: 0px 3px;
   cursor: pointer;
 }
+.table{
+  .header__table{
+    
+    color: white;
+    display: flex;
+    .number__id, .car, .name__car, .win, .best__time{
+      text-align: center;
+      border: 1px solid rgb(255, 255, 255);
+      background-color:rgb(39, 194, 214);
+      padding: 5px;
+      p{
+        margin: 0px;
+      }
+    }
+  }
+  
+}

@@ -161,4 +161,22 @@ input[type="text"] {
   margin: 0px 3px;
   cursor: pointer;
 }
+
+.table .header__table {
+  color: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.table .header__table .number__id, .table .header__table .car, .table .header__table .name__car, .table .header__table .win, .table .header__table .best__time {
+  text-align: center;
+  border: 1px solid white;
+  background-color: #27c2d6;
+  padding: 5px;
+}
+
+.table .header__table .number__id p, .table .header__table .car p, .table .header__table .name__car p, .table .header__table .win p, .table .header__table .best__time p {
+  margin: 0px;
+}
 /*# sourceMappingURL=style.css.map */

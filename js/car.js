@@ -1,5 +1,5 @@
 import Winner from "./winner.js";
-
+import { removeCar } from './server.js'
 export default class Car {
   constructor(nameCar, colorCar) {
     this.countAddEvent = 0;
@@ -10,11 +10,12 @@ export default class Car {
     this.arrRes = [];
     this.winner = document.querySelector(".button__view-winner");
     this.paginationBlock = document.querySelector(".pagination");
-
+this.winTable = []
     this.winner.addEventListener("click", () => {});
     if (this.page.children.length > 7) {
       this.pagination();
     }
+    this.checkPagination()
   }
 
   createBlockCar(nameCar, colorCar) {
@@ -92,7 +93,7 @@ export default class Car {
       });
     });
     buttonRemove.addEventListener("click", event => {
-      debugger;
+     // debugger;
       this.removeBlockCar(event.target);
       this.garageCount(false);
       this.checkPagination();
@@ -102,7 +103,7 @@ export default class Car {
       let winner = {}
       let nameCar = event.target.parentNode.parentNode.children[0].children[2].innerHTML
       let carSvg = event.target.parentNode.parentNode.children[1].children[2]
-      console.log(carSvg);
+      
      
       const parentNode = event.target.parentNode;
       let left = 0;
@@ -112,7 +113,9 @@ export default class Car {
       winner.time = Number(time);
       winner.name = nameCar;
       winner.carSvg = carSvg;
-      const winnerClass = new Winner(winner); 
+      this.writeWinner(winner)
+      
+     // const winnerClass = new Winner(winner); 
      // console.log("speed: m/s " + speed);
      // console.log("Путь:", carImgBlock.offsetWidth);
      // console.log("time", (S / 100 / speed).toFixed(2));
@@ -138,13 +141,13 @@ export default class Car {
         clearInterval(x);
         parentNode.children[2].style.left = `0%`;
       });
+      const winnerClass = new Winner(); 
     });
 
     this.garageCount(true);
-    this.createCar();
   }
   checkPagination() {
-    debugger
+    
     this.paginationBlock.innerHTML = "";
     let arrPage = [];
     let pageLength = this.page.children.length;
@@ -165,12 +168,7 @@ export default class Car {
       pageNumber.innerHTML = el;
       this.paginationBlock.appendChild(pageNumber);
     });
-    // for (let i = 0; i < this.page.children.length; i++) {
-    //   if (i >= 7) {
-    //     //console.log('none');
-    //     this.page.children[i].classList.add("hide");
-    //   }
-    // }
+  
   }
 
   pagination() {
@@ -196,7 +194,7 @@ export default class Car {
     });
     for (let i = 0; i < this.page.children.length; i++) {
       if (i >= 7) {
-        console.log("none");
+       
         this.page.children[i].classList.add("hide");
       }
     }
@@ -296,7 +294,7 @@ export default class Car {
     garageCount.innerHTML = count;
   }
   removeBlockCar(block) {
-    debugger;
+    //debugger;
     const nextNode = block.parentNode.parentNode.nextSibling;
     this.checkNextSibling(nextNode);
 
@@ -305,10 +303,11 @@ export default class Car {
     const colorCar =
       block.parentNode.parentNode.children[1].children[2].children[0]
         .children[0].children[0].style.fill;
-    this.removeCar(nameCar, colorCar);
+    const color = `#${this.getHexRGBColor(colorCar)}`;
+    removeCar(nameCar, color);
   }
   checkNextSibling(nextNode) {
-    debugger;
+   // debugger;
     if (nextNode == null) {
       return;
     }
@@ -353,22 +352,7 @@ export default class Car {
       }
     }
   }
-  async createCar() {
-    let url = "http://127.0.0.1:3000/garage";
-
-    let dataParams = {
-      name: this.nameCar,
-      color: this.colorCar,
-    };
-    let response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataParams),
-    });
-    let result = await response.json();
-  }
+ 
   async removeCar(nameCar, colorCar) {
     let color = `#${this.getHexRGBColor(colorCar)}`;
     let url = "http://127.0.0.1:3000/garage";
@@ -404,6 +388,24 @@ export default class Car {
         });
       }
     });
+  }
+  async writeWinner(winner){
+    let url = "http://127.0.0.1:3000/winners";
+
+    let dataParams = {
+      wins: 1,
+      time: winner.time,
+      name: winner.name,
+      car: winner.carSvg,
+    };
+    let response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataParams),
+    });
+    let result = await response.json();
   }
   disabledUpdate() {
     let nameCarUpdate = document.querySelector(".name__car-update");

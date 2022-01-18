@@ -1,8 +1,10 @@
 import Car from './car.js';
-import {data, dataNameCar} from './data.js';
+import { dataNameCar} from './data.js';
+
 export default class Garage{
-  constructor(){
-    this.data = data;
+  constructor(state){
+    this.state = state; 
+    this.renderState(this.state)
     this.buttonCreate = document.querySelector('.button__create')
     this.inputNameCarCreate = document.querySelector('.name__car-create')
     this.inputColorCarCreate = document.querySelector('.color__car-create')
@@ -21,12 +23,14 @@ export default class Garage{
       const colorCar = this.getColorCreate();
       const nameCar = this.getNameCreate();
       const car = new Car(nameCar, colorCar);
+      car.createCar();
     })
     this.generateButton.addEventListener('click', () =>{
       let i = 8;
       while(i !== 0){
         let color = `rgb(${Math.floor(this.getRandomColor(0,255))},${Math.floor(this.getRandomColor(0,255))},${Math.floor(this.getRandomColor(0,255))})`
         const car = new Car(dataNameCar[this.getRandomName(0, dataNameCar.length)], `#${this.getHexRGBColor(color)}`);
+        car.createCar()
         i--
       }
       
@@ -55,6 +59,17 @@ export default class Garage{
       this.inpCreate.style.display = 'block'
       this.buttonMenu.style.display = 'block'
     })
+  }
+  renderState(state){
+    let i = state.length;
+    state.forEach((el)=>{
+      const car = new Car(el.name, el.color)
+    })
+    console.log(state);
+   // while(i !== 0){
+    //  const car = new Car(state[i].name, state[i].color);
+    //  i--
+   // }
   }
   getHexRGBColor(color) {
     color = color.replace(/\s/g, "");
