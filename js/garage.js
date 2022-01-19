@@ -26,7 +26,7 @@ export default class Garage{
       car.createCar();
     })
     this.generateButton.addEventListener('click', () =>{
-      let i = 8;
+      let i = 10;
       while(i !== 0){
         let color = `rgb(${Math.floor(this.getRandomColor(0,255))},${Math.floor(this.getRandomColor(0,255))},${Math.floor(this.getRandomColor(0,255))})`
         const car = new Car(dataNameCar[this.getRandomName(0, dataNameCar.length)], `#${this.getHexRGBColor(color)}`);

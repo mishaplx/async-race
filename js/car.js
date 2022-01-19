@@ -1,5 +1,5 @@
 import Winner from "./winner.js";
-import { removeCar, updateCar } from './server.js'
+import { StartStopCarsEngine, removeCar, updateCar,SwitchCasEnginetoDriveMode,getCarID } from './server.js'
 export default class Car {
   constructor(nameCar, colorCar) {
     this.countAddEvent = 0;
@@ -100,8 +100,20 @@ this.winTable = []
     });
 
     carButtonA.addEventListener("click", event => {
-      let winner = {}
       let nameCar = event.target.parentNode.parentNode.children[0].children[2].innerHTML
+      let colorCar = event.target.parentNode.parentNode.children[1].children[2].children[0].children[0].children[0].style.fill;
+      
+      let id = getCarID(nameCar,this.getHexRGBColor(colorCar)).then(function(data){
+      let userid = JSON.parse(data);
+      SwitchCasEnginetoDriveMode()
+      StartStopCarsEngine(userid,'started')
+      
+      }) 
+     
+     
+      
+      //SwitchCasEnginetoDriveMode()
+      let winner = {}
       let carSvg = event.target.parentNode.parentNode.children[1].children[2]
       
      

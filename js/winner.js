@@ -14,6 +14,6 @@ export default class Winner{
     
     let response = await fetch(url);
     let result = await response.json();
-    console.log(result);
+    //console.log(result);
   }
 }
