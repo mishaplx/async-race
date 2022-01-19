@@ -16,12 +16,8 @@ export async function getCarID(nameCar, colorCar) {
      return data[i].id;
      }
   }
- // data.forEach(el => {
- //   if (el.name === nameCar && el.color === colorEl) {
-  //   return el.id
     }
-  //});
-//}
+
 export async function removeCar(nameCar, colorCar) {
   let url = "http://127.0.0.1:3000/garage";
   let response = await fetch(url);
@@ -62,12 +58,14 @@ export async function updateCar(nameCar, colorCar) {
 export async function StartStopCarsEngine(numberid, status) {
 
   let url = `http://127.0.0.1:3000/engine/?id=${numberid}&status=${status}`;
+ // debugger
   let response = await fetch(url,{method: "PATCH"});
   const data = await response.json();
  console.log(data);
 }
-export async function SwitchCasEnginetoDriveMode(){
-  let url = `http://127.0.0.1:3000/engine/?id=1&status=drive`;
+export async function SwitchCasEnginetoDriveMode(numberid){
+  let url = `http://127.0.0.1:3000/engine/?id=${numberid}&status=drive`;
+  //debugger
   let response = await fetch(url,{method: "PATCH"});
   const data = await response.json();
  console.log(data);

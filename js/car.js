@@ -105,8 +105,10 @@ this.winTable = []
       
       let id = getCarID(nameCar,this.getHexRGBColor(colorCar)).then(function(data){
       let userid = JSON.parse(data);
-      SwitchCasEnginetoDriveMode()
+      //debugger
       StartStopCarsEngine(userid,'started')
+     
+      SwitchCasEnginetoDriveMode(userid)
       
       }) 
      
@@ -137,7 +139,7 @@ this.winTable = []
 
 
       let x = setInterval(() => {
-        left = left + speed;
+        left = left + 2;
         parentNode.children[2].style.left = `${left}px`;
 
         if (
