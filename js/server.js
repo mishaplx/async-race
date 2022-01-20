@@ -60,13 +60,75 @@ export async function StartStopCarsEngine(numberid, status) {
   let url = `http://127.0.0.1:3000/engine/?id=${numberid}&status=${status}`;
  // debugger
   let response = await fetch(url,{method: "PATCH"});
-  const data = await response.json();
- console.log(data);
+  const result = await response.json();
+  return result
 }
 export async function SwitchCasEnginetoDriveMode(numberid){
+  try{
   let url = `http://127.0.0.1:3000/engine/?id=${numberid}&status=drive`;
   //debugger
   let response = await fetch(url,{method: "PATCH"});
-  const data = await response.json();
- console.log(data);
+  const res = await response.json();
+  return res;
+  }
+  catch(err){
+    animation(0,0,false)
+  }
+}
+export function animation(velocity, event,status){
+  if(velocity >= 100){
+    velocity = velocity * 10
+  }
+  else{
+    velocity = velocity * 100
+  }
+  
+  const carImgBlock = document.querySelector('.car__block-img')
+  const S = carImgBlock.offsetWidth;
+  let carSvg = event.parentNode.parentNode.children[1].children[2]
+  if (status == false){
+    console.log(carSvg.style.left);
+    carSvg.classList.remove('startAnumation')
+  }
+  else{
+   // console.log(carSvg.offsetWidth);
+   
+    carSvg.classList.add('startAnumation')
+  }
+ 
+  
+  
+
+  /*
+  carSvg.animate([
+      // keyframes
+      { left: '0px' },
+      { left: `${S - 100}px` }
+    ], {
+      // timing options
+      duration: velocity,
+      iterations: 1,
+      'fill': 'forwards'
+    })
+  const parentNode = event.parentNode;
+  let left = 0;
+  //const speed = this.getRandom(1, 100);
+  
+  console.log(S);
+    const time = (S /10 / velocity).toFixed(2);
+    console.log(time);
+
+    let x = setInterval(() => {
+      
+      left = left + velocity / 5;
+      parentNode.children[2].style.left = `${left}px`;
+
+      if (
+        parseInt(parentNode.children[2].style.left, 10) >=
+        carImgBlock.offsetWidth - velocity - 50 || status == false
+      ) {
+        clearInterval(x);
+      }
+    }, 100);
+*/
 }

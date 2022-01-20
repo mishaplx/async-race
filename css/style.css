@@ -179,4 +179,31 @@ input[type="text"] {
 .table .header__table .number__id p, .table .header__table .car p, .table .header__table .name__car p, .table .header__table .win p, .table .header__table .best__time p {
   margin: 0px;
 }
+
+.startAnumation {
+  -webkit-animation-duration: 5s;
+          animation-duration: 5s;
+  -webkit-animation-name: slidein;
+          animation-name: slidein;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes slidein {
+  from {
+    left: 0%;
+  }
+  to {
+    left: 90%;
+  }
+}
+
+@keyframes slidein {
+  from {
+    left: 0%;
+  }
+  to {
+    left: 90%;
+  }
+}
 /*# sourceMappingURL=style.css.map */

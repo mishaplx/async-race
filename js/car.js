@@ -1,5 +1,5 @@
 import Winner from "./winner.js";
-import { StartStopCarsEngine, removeCar, updateCar,SwitchCasEnginetoDriveMode,getCarID } from './server.js'
+import { StartStopCarsEngine, animation, removeCar, updateCar,SwitchCasEnginetoDriveMode,getCarID } from './server.js'
 export default class Car {
   constructor(nameCar, colorCar) {
     this.countAddEvent = 0;
@@ -103,63 +103,42 @@ this.winTable = []
       let nameCar = event.target.parentNode.parentNode.children[0].children[2].innerHTML
       let colorCar = event.target.parentNode.parentNode.children[1].children[2].children[0].children[0].children[0].style.fill;
       
-      let id = getCarID(nameCar,this.getHexRGBColor(colorCar)).then(function(data){
+      let id = getCarID(nameCar,this.getHexRGBColor(colorCar))
+      .then(function(data){
       let userid = JSON.parse(data);
+     // console.log(userid);
       //debugger
-      StartStopCarsEngine(userid,'started')
-     
+      StartStopCarsEngine(userid, 'started')
+      .then(function (result) {
+        
+        
+        animation(result.velocity, event.target, true)
+      })
       SwitchCasEnginetoDriveMode(userid)
+      .then(function (result) {
       
+        console.log(result);
+        
+        
+      })
+      .catch(function (err) {
+        let parentNode = event.target.parentNode;
+        
+        parentNode.children[2].style.left = `0%`;
+        animation(0, event.target,false)
+        console.log(err);
+      })
       }) 
-     
-     
-      
-      //SwitchCasEnginetoDriveMode()
-      let winner = {}
-      let carSvg = event.target.parentNode.parentNode.children[1].children[2]
-      
-     
-      const parentNode = event.target.parentNode;
-      let left = 0;
-      const speed = this.getRandom(1, 100);
-      const S = carImgBlock.offsetWidth;
-      const time = (S / 100 / speed).toFixed(2);
-      winner.time = Number(time);
-      winner.name = nameCar;
-      winner.carSvg = carSvg;
-      this.writeWinner(winner)
-      
-     // const winnerClass = new Winner(winner); 
-     // console.log("speed: m/s " + speed);
-     // console.log("Путь:", carImgBlock.offsetWidth);
-     // console.log("time", (S / 100 / speed).toFixed(2));
-    //  console.log("\n");
-      this.arrRes.push(time);
-//console.log(this.arrRes);
-
-
-      let x = setInterval(() => {
-        left = left + 2;
-        parentNode.children[2].style.left = `${left}px`;
-
-        if (
-          parseInt(parentNode.children[2].style.left, 10) >=
-          carImgBlock.offsetWidth - speed - 100
-        ) {
-          clearInterval(x);
-        }
-      }, 100);
-
       carButtonB.addEventListener("click", event => {
         let parentNode = event.target.parentNode;
-        clearInterval(x);
-        parentNode.children[2].style.left = `0%`;
+        
+        parentNode.children[2].classList.remove('startAnumation')
       });
-      const winnerClass = new Winner(); 
     });
-
+ 
     this.garageCount(true);
   }
+
   checkPagination() {
     
     this.paginationBlock.innerHTML = "";
