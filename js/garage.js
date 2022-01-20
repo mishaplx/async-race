@@ -14,7 +14,8 @@ export default class Garage{
     this.resetButton = document.querySelector('.button-menu-reset')
     this.page = document.querySelector('.page')
     this.garage = document.querySelector('.garage')
-    this.winnersButton = document.querySelector('.button__view-winner ')
+    this.winnersButton = document.querySelector('.button__view-winner')
+    this.winnersBlock = document.querySelector('.winners')
     this.garageButton = document.querySelector('.button__view-garage')
     this.inpUpdate = document.querySelector('.input__update')
     this.inpCreate = document.querySelector('.input__create')
@@ -52,12 +53,14 @@ export default class Garage{
       this.inpUpdate.style.display = 'none'
       this.inpCreate.style.display = 'none'
       this.buttonMenu.style.display = 'none'
+      this.winnersBlock.style.display = 'block'
     })
     this.garageButton.addEventListener('click', () =>{
       this.garage.style.display = 'block';
       this.inpUpdate.style.display = 'block'
       this.inpCreate.style.display = 'block'
       this.buttonMenu.style.display = 'block'
+      this.winnersBlock.style.display = 'none'
     })
   }
   renderState(state){
