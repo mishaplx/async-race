@@ -1,3 +1,4 @@
+import Winner from "./winner.js";
 export async function getCar() {
   
   let url = "http://127.0.0.1:3000/garage";
@@ -77,22 +78,24 @@ export async function SwitchCasEnginetoDriveMode(numberid){
 }
 export function animation(velocity, event,status){
   if(velocity >= 100){
-    velocity = velocity * 10
+   // debugger
+    velocity = velocity / 10
   }
   else{
-    velocity = velocity * 100
+    velocity = velocity 
   }
   
   const carImgBlock = document.querySelector('.car__block-img')
   const S = carImgBlock.offsetWidth;
   let carSvg = event.parentNode.parentNode.children[1].children[2]
   if (status == false){
-    console.log(carSvg.style.left);
+    
     carSvg.classList.remove('startAnumation')
   }
   else{
    // console.log(carSvg.offsetWidth);
-   
+   //debugger
+    carSvg.style.animationDuration = `${velocity}s`
     carSvg.classList.add('startAnumation')
   }
  
@@ -131,4 +134,9 @@ export function animation(velocity, event,status){
       }
     }, 100);
 */
+}
+
+export function winner(velocity, event) {
+  const winner = new Winner(velocity, event)
+  
 }

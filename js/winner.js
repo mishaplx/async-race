@@ -1,11 +1,12 @@
 export default class Winner{
-  constructor(winner){
+  constructor(velocity, event){
     this.numberBlock = document.querySelector('.number__id')
     this.carSvgBlock = document.querySelector('.car')
     this.nameCarBlock = document.querySelector('.name__car')
     this.winBlock = document.querySelector('.win')
     this.bestTimeBlock = document.querySelector('.best__time')
-    //console.log(winner);
+    console.log(velocity);
+    console.log(event);
     this.getWinner()
   }
   async getWinner(){

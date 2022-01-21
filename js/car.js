@@ -1,5 +1,5 @@
-import Winner from "./winner.js";
-import { StartStopCarsEngine, animation, removeCar, updateCar,SwitchCasEnginetoDriveMode,getCarID } from './server.js'
+
+import { StartStopCarsEngine, winner, animation, removeCar, updateCar,SwitchCasEnginetoDriveMode,getCarID } from './server.js'
 export default class Car {
   constructor(nameCar, colorCar) {
     this.countAddEvent = 0;
@@ -7,10 +7,9 @@ export default class Car {
     this.colorCar = colorCar;
     this.page = document.querySelector(".page");
     this.createBlockCar(this.nameCar, this.colorCar);
-    this.arrRes = [];
+    
     this.winner = document.querySelector(".button__view-winner");
     this.paginationBlock = document.querySelector(".pagination");
-this.winTable = []
     this.winner.addEventListener("click", () => {});
     if (this.page.children.length > 7) {
       this.pagination();
@@ -110,17 +109,14 @@ this.winTable = []
       //debugger
       StartStopCarsEngine(userid, 'started')
       .then(function (result) {
-        
-        
         animation(result.velocity, event.target, true)
+        winner(result.velocity,event.target)
       })
       SwitchCasEnginetoDriveMode(userid)
       .then(function (result) {
-      
         console.log(result);
-        
-        
       })
+      .then()
       .catch(function (err) {
         let parentNode = event.target.parentNode;
         
