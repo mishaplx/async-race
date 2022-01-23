@@ -105,8 +105,7 @@ export default class Car {
       let id = getCarID(nameCar,this.getHexRGBColor(colorCar))
       .then(function(data){
       let userid = JSON.parse(data);
-     // console.log(userid);
-      //debugger
+     
       StartStopCarsEngine(userid, 'started')
       .then(function (result) {
         animation(result.velocity, event.target, true)
@@ -122,7 +121,7 @@ export default class Car {
         
         parentNode.children[2].style.left = `0%`;
         animation(0, event.target,false)
-        console.log(err);
+        //console.log(err);
       })
       }) 
       carButtonB.addEventListener("click", event => {

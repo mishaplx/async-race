@@ -137,12 +137,9 @@ $colorblueButtonActive: rgb(66, 116, 117);
   cursor: pointer;
 }
 .table{
-  .header__table{
-    
-    color: white;
-    display: flex;
-    .number__id, .car, .name__car, .win, .best__time{
-      text-align: center;
+
+    th{
+     
       border: 1px solid rgb(255, 255, 255);
       background-color:rgb(39, 194, 214);
       padding: 5px;
@@ -150,7 +147,7 @@ $colorblueButtonActive: rgb(66, 116, 117);
         margin: 0px;
       }
     }
-  }
+  
   
 }
 .startAnumation{
@@ -168,4 +165,11 @@ $colorblueButtonActive: rgb(66, 116, 117);
     left: 90%;
     
   }
+}
+.win{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: rgb(158, 219, 14);
+  font-size: 20px;
 }

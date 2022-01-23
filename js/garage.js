@@ -1,5 +1,5 @@
 import Car from './car.js';
-import { dataNameCar} from './data.js';
+import { dataNameCar, dataNameCar2} from './data.js';
 
 export default class Garage{
   constructor(state){
@@ -30,7 +30,7 @@ export default class Garage{
       let i = 10;
       while(i !== 0){
         let color = `rgb(${Math.floor(this.getRandomColor(0,255))},${Math.floor(this.getRandomColor(0,255))},${Math.floor(this.getRandomColor(0,255))})`
-        const car = new Car(dataNameCar[this.getRandomName(0, dataNameCar.length)], `#${this.getHexRGBColor(color)}`);
+        const car = new Car(`${dataNameCar[this.getRandomName(0, dataNameCar.length)]}-${dataNameCar2[this.getRandomName(0, dataNameCar2.length)]}` , `#${this.getHexRGBColor(color)}`);
         car.createCar()
         i--
       }
@@ -94,7 +94,9 @@ export default class Garage{
 raceAll(event){
   const buttonA = document.querySelectorAll('.car__block-buttonA')
   for (let i = 0; i < buttonA.length; i++) {
-    buttonA[i].click();
+    if(buttonA[i].parentNode.parentNode.className == 'car__block'){
+      buttonA[i].click();
+    }
    
   }
 }

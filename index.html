@@ -1,71 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./css/style.css">
-  <title>async race</title>
-</head>
-<body>
-  <div class="wrapper">
-    <div class="container">
-      <div class="buttons__menu">
-        <div class="button__view">
-          <button class="button__view-garage button">to garage</button>
-          <button class="button__view-winner button">to winners</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>async race</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <div class="buttons__menu">
+          <div class="button__view">
+            <button class="button__view-garage button">to garage</button>
+            <button class="button__view-winner button">to winners</button>
+          </div>
+          <div class="input__create">
+            <input type="text" class="name__car-create" value="Mercedes-Benz" />
+            <input type="color" class="color__car-create" value="#ffffff" />
+            <button class="button__create button-blue">create</button>
+          </div>
+          <div class="input__update">
+            <input type="text" class="name__car-update" disabled />
+            <input
+              type="color"
+              class="color__car-update"
+              value="#ffffff"
+              disabled
+            />
+            <button class="button__update button-blue" disabled>update</button>
+          </div>
+          <div class="button-menu">
+            <button class="button-menu-race button">race</button>
+            <button class="button-menu-reset button">reset</button>
+            <button class="button-menu-generate button-blue">
+              generate car
+            </button>
+          </div>
         </div>
-        <div class="input__create">
-          <input type="text" class="name__car-create" value="Mercedes-Benz">
-          <input type="color" class="color__car-create" value="#ffffff">
-          <button class="button__create button-blue">create</button>
-        </div>
-        <div class="input__update">
-          <input type="text" class="name__car-update" disabled >
-          <input type="color" class="color__car-update" value="#ffffff" disabled >
-          <button class="button__update button-blue" disabled >update</button>
-        </div>
-        <div class="button-menu">
-          <button class="button-menu-race button">race</button>
-          <button class="button-menu-reset button">reset</button>
-          <button class="button-menu-generate button-blue">generate car</button>
-        </div>
-      </div>
-      <div class="garage">
-        <p class="garage-title">Garage (<span class="garage-count">0</span>) </p>
+        <div class="garage">
+          <p class="garage-title">
+            Garage (<span class="garage-count">0</span>)
+          </p>
           <p class="page-title">Page #<span class="page-count">1</span></p>
-          <div class="page">
+          <div class="page"></div>
+          <div class="pagination"></div>
         </div>
-        <div class="pagination"></div>
-      </div>
-      <div class="winners" style="display: none">
-        <p class="winners-title">Garage (<span class="winners-count">0</span>) </p>
-        <p class="winners-title">Page #<span class="winners-count">0</span></p>
-        <div class="table">
-          <div class="header__table">
-            <div class="number__id">
-              <p class="number__id-title">Number</p>
-             
-            </div>
-            <div class="car">
-            <p class="car-title">Car</p>  
-            </div>
-            <div class="name__car">
-              <p class="name__car-title">Name</p>
-              </div>
-            <div class="win">
-              <p class="win-title">Win</p>
-          </div>
-            <div class="best__time">
-              <p class="best__time-title">Best time(second)</p>
-              </div>
-          </div>
+        <div class="winners" style="display: none">
+          <p class="winners-title">
+            Winners (<span class="winners-count">0</span>)
+          </p>
+          <p class="winners-title">
+            Page #<span class="winners-count">0</span>
+          </p>
+          
+            <table border="1" class="table">
+              <tr>
+               <th>Number</th>
+               <th>Car</th>
+               <th>Name</th>
+               <th>Win</th>
+               <th>Best time(second)</th>
+              </tr>
+
+             </table>
+
         </div>
       </div>
-      
     </div>
-</div>
-  
-  <script type='module' src='./js/index.js'></script>
-</body>
+    <div class="win" style="display: none;">win 2.3s</div>
+
+    <script type="module" src="./js/index.js"></script>
+  </body>
 </html>
