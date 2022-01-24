@@ -3,6 +3,7 @@ import { StartStopCarsEngine, winner, animation, removeCar, updateCar,SwitchCasE
 import { winnerCarArr } from './data.js'
 export default class Car {
   constructor(nameCar, colorCar) {
+    this.mainWin = undefined
     this.countAddEvent = 0;
     this.nameCar = nameCar;
     this.colorCar = colorCar;
@@ -130,13 +131,12 @@ export default class Car {
      
         let x = setInterval(()=>{
           this.checkWin(parentNode.offsetWidth,carBlock.offsetLeft, nameCar)
+          if(this.winBlock.style.display == 'block'){
+            clearInterval(x)
+          }
+          
         },500)
-        if (this.flag){
-
-          clearInterval(x)
-        }
-        this.flag = false
-
+       
       carButtonB.addEventListener("click", event => {
         this.winBlock.style.display = "none"
         clearInterval(x)
@@ -148,15 +148,20 @@ export default class Car {
     this.garageCount(true);
   }
   checkWin(width, carBlock, nameCar){
-    if(winnerCarArr.length > 0){
-      winnerCarArr.splice(0, winnerCarArr.length - 1)
-    }
+    
     if(carBlock >= width - (width / 10)){
       winnerCarArr.push(nameCar);
-      this.winBlock.innerHTML = `${winnerCarArr[0]} WINS!!!`
+      if(winnerCarArr.length > 1){
+        for (let i=0;i<winnerCarArr.length;i++)winnerCarArr.splice(i)
+        console.log(winnerCarArr);
+        return
+      }
+      this.winBlock.innerHTML = `${winnerCarArr[winnerCarArr.length - 1]} WINS!!!`
       this.winBlock.style.display = 'block'
-      this.flag = true
+      console.log(winnerCarArr);
+      return
     }
+    
     
   }
   checkPagination() {
