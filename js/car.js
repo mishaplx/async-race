@@ -147,17 +147,13 @@ export default class Car {
     this.garageCount(true);
   }
   checkWin(width, carBlock, nameCar){
-    
-    if(carBlock >= width - 100){
+    if(carBlock >= width - (width / 10)){
       winnerCarArr.push(nameCar);
       this.winBlock.innerHTML = `${winnerCarArr[0]} WINS!!!`
       this.winBlock.style.display = 'block'
       this.flag = true
       return this.flag
     }
-//console.log(width);
-//console.log(carBlock);
-//console.log(winnerCarArr);
   }
   checkPagination() {
     

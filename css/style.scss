@@ -154,6 +154,7 @@ $colorblueButtonActive: rgb(66, 116, 117);
   
   animation-name: slidein;
   animation-fill-mode: forwards;
+  animation-timing-function: linear; 
 }
 @keyframes slidein {
   from {
