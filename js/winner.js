@@ -9,57 +9,48 @@ export default class Winner {
     this.winnerCount = document.querySelector(".winners-count");
     this.addInTableWinners(velocity, event);
   }
-  async getWinner() {
-    let url = "http://127.0.0.1:3000/winners";
 
-    let response = await fetch(url);
-    let result = await response.json();
-  }
-  async getWinnerLength(){
-
-  }
   addInTableWinners(velocity, event) {
     if (velocity >= 100) {
-      velocity = velocity / 10;
-    } else {
-      velocity = velocity;
+      // eslint-disable-next-line no-param-reassign
+      velocity /= 10;
     }
-    
+
     const carSvgBlock = event.parentNode.children[2].cloneNode(true);
-      carSvgBlock.classList.remove('startAnumation')
-    const nameCar =
-      event.parentNode.parentNode.children[0].children[2].innerHTML;
+    carSvgBlock.classList.remove("startAnumation");
+    const nameCar = event.parentNode.parentNode.children[0].children[2].innerHTML;
 
     const tr = document.createElement("tr");
     const tdnumber = document.createElement("td");
-    tdnumber.innerHTML = Number(this.winnerCount.innerHTML)+ 1
+    tdnumber.innerHTML = Number(this.winnerCount.innerHTML) + 1;
     tr.appendChild(tdnumber);
 
     const carSvg = document.createElement("td");
-    
+
     carSvg.appendChild(carSvgBlock);
     tr.appendChild(carSvg);
 
     const namecar = document.createElement("td");
-    namecar.innerHTML = nameCar
+    namecar.innerHTML = nameCar;
     tr.appendChild(namecar);
 
     const tdWin = document.createElement("td");
-    tdWin.innerHTML = 1
+    tdWin.innerHTML = 1;
     tr.appendChild(tdWin);
 
     const tdVelocity = document.createElement("td");
-    tdVelocity.innerHTML = velocity
+    tdVelocity.innerHTML = velocity;
     tr.appendChild(tdVelocity);
-    this.table.appendChild(tr)
-    this.winnersCount(true)
+    this.table.appendChild(tr);
+    this.winnersCount(true);
   }
+
   winnersCount(flag) {
     let count = Number(this.winnerCount.innerHTML);
     if (flag) {
-      count++;
+      count += 1;
     } else {
-      count--;
+      count -= 1;
     }
     this.winnerCount.innerHTML = count;
   }

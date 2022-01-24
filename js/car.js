@@ -1,15 +1,23 @@
+/* eslint-disable max-len */
+/* eslint-disable no-param-reassign */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-vars */
+import {
+  StartStopCarsEngine, winner, animation,
+  removeCar, updateCar, SwitchCasEnginetoDriveMode, getCarID,
+} from "./server.js";
+import { winnerCarArr } from "./data.js";
 
-import { StartStopCarsEngine, winner, animation, removeCar, updateCar,SwitchCasEnginetoDriveMode,getCarID } from './server.js'
-import { winnerCarArr } from './data.js'
 export default class Car {
   constructor(nameCar, colorCar) {
-    this.mainWin = undefined
+    this.mainWin = undefined;
     this.countAddEvent = 0;
     this.nameCar = nameCar;
     this.colorCar = colorCar;
     this.page = document.querySelector(".page");
     this.createBlockCar(this.nameCar, this.colorCar);
-    this.winBlock = document.querySelector('.win')
+    this.winBlock = document.querySelector(".win");
     this.winner = document.querySelector(".button__view-winner");
     this.paginationBlock = document.querySelector(".pagination");
     this.flag = false;
@@ -17,7 +25,7 @@ export default class Car {
     if (this.page.children.length > 7) {
       this.pagination();
     }
-    this.checkPagination()
+    this.checkPagination();
   }
 
   createBlockCar(nameCar, colorCar) {
@@ -71,161 +79,156 @@ export default class Car {
 
     this.page.appendChild(carBlock);
     let flag = 0;
-    buttonSelect.addEventListener("click", event => {
+    buttonSelect.addEventListener("click", (event) => {
       const page = document.querySelector(".page");
-      let parentNode = event.target.parentNode.parentNode;
+      const { parentNode } = event.target.parentNode;
       parentNode.classList.toggle("active");
 
-      for (let i = 0; i < page.children.length; i++) {
-        if (page.children[i].className == "car__block active") {
-          flag++;
+      for (let i = 0; i < page.children.length; i += 1) {
+        if (page.children[i].className === "car__block active") {
+          flag += 1;
         }
       }
 
-      let buttonUpdate = document.querySelector(".button__update");
-      if (flag == 2) {
+      const buttonUpdate = document.querySelector(".button__update");
+      if (flag === 2) {
         parentNode.classList.remove("active");
         flag = 0;
       } else {
         this.disabledUpdate();
       }
 
-      buttonUpdate.addEventListener("click", event => {
+      buttonUpdate.addEventListener("click", () => {
         this.updateButton();
       });
     });
-    buttonRemove.addEventListener("click", event => {
+    buttonRemove.addEventListener("click", (event) => {
       this.removeBlockCar(event.target);
       this.garageCount(false);
       this.checkPagination();
     });
 
-    carButtonA.addEventListener("click", event => {
-      let nameCar = event.target.parentNode.parentNode.children[0].children[2].innerHTML
-      let colorCar = event.target.parentNode.parentNode.children[1].children[2].children[0].children[0].children[0].style.fill;
-     
-      let id = getCarID(nameCar,this.getHexRGBColor(colorCar))
-      .then(function(data){
-      let userid = JSON.parse(data);
-     
-      StartStopCarsEngine(userid, 'started')
-      .then(function (result) {
-        animation(result.velocity, event.target, true)
-        winner(result.velocity,event.target)
-      })
-      SwitchCasEnginetoDriveMode(userid)
-      .then(function (result) {
-        console.log(result);
-      })
-      .then()
-      .catch(function (err) {
-        let parentNode = event.target.parentNode;
-        
-        parentNode.children[2].style.left = `0%`;
-        animation(0, event.target,false)
-      })
-      }) 
-      let parentNode = event.target.parentNode.parentNode
-      const carBlock = event.target.parentNode.children[2]
-      
-     
-        let x = setInterval(()=>{
-          this.checkWin(parentNode.offsetWidth,carBlock.offsetLeft, nameCar)
-          if(this.winBlock.style.display == 'block'){
-            clearInterval(x)
-          }
-          
-        },500)
-       
-      carButtonB.addEventListener("click", event => {
-        this.winBlock.style.display = "none"
-        clearInterval(x)
-        let parentNode = event.target.parentNode; 
-        parentNode.children[2].classList.remove('startAnumation')
+    carButtonA.addEventListener("click", (event) => {
+      // eslint-disable-next-line no-shadow
+      const nameCar = event.target.parentNode.parentNode.children[0].children[2].innerHTML;
+      // eslint-disable-next-line max-len
+      const colorCar = event.target.parentNode.parentNode.children[1].children[2].children[0].children[0].children[0].style.fill;
+
+      const id = getCarID(nameCar, this.getHexRGBColor(colorCar))
+        .then((data) => {
+          const userid = JSON.parse(data);
+
+          StartStopCarsEngine(userid, "started")
+            .then((result) => {
+              animation(result.velocity, event.target, true);
+              winner(result.velocity, event.target);
+            });
+          SwitchCasEnginetoDriveMode(userid)
+            .then((result) => {
+              console.log(result);
+            })
+            .then()
+            .catch((err) => {
+              const { parentNode } = event.target;
+
+              parentNode.children[2].style.left = "0%";
+              animation(0, event.target, false);
+            });
+        });
+      const { parentNode } = event.target.parentNode;
+      const carBlock = event.target.parentNode.children[2];
+
+      const x = setInterval(() => {
+        this.checkWin(parentNode.offsetWidth, carBlock.offsetLeft, nameCar);
+        if (this.winBlock.style.display === "block") {
+          clearInterval(x);
+        }
+      }, 500);
+
+      carButtonB.addEventListener("click", (event) => {
+        this.winBlock.style.display = "none";
+        clearInterval(x);
+        const { parentNode } = event.target;
+        parentNode.children[2].classList.remove("startAnumation");
       });
     });
- 
+
     this.garageCount(true);
   }
-  checkWin(width, carBlock, nameCar){
-    
-    if(carBlock >= width - (width / 10)){
+
+  checkWin(width, carBlock, nameCar) {
+    if (carBlock >= width - (width / 10)) {
       winnerCarArr.push(nameCar);
-      if(winnerCarArr.length > 1){
-        for (let i=0;i<winnerCarArr.length;i++)winnerCarArr.splice(i)
+      if (winnerCarArr.length > 1) {
+        for (let i = 0; i < winnerCarArr.length; i += 1)winnerCarArr.splice(i);
         console.log(winnerCarArr);
-        return
+        return;
       }
-      this.winBlock.innerHTML = `${winnerCarArr[winnerCarArr.length - 1]} WINS!!!`
-      this.winBlock.style.display = 'block'
+      this.winBlock.innerHTML = `${winnerCarArr[winnerCarArr.length - 1]} WINS!!!`;
+      this.winBlock.style.display = "block";
       console.log(winnerCarArr);
-      return
     }
-    
-    
   }
+
   checkPagination() {
-    
     this.paginationBlock.innerHTML = "";
-    let arrPage = [];
+    const arrPage = [];
     let pageLength = this.page.children.length;
 
     let i = 1;
     while (pageLength > 7) {
       arrPage.push(i);
-      i++;
-      pageLength = pageLength - 7;
+      i += 1;
+      pageLength -= 7;
       if (pageLength < 7) {
         arrPage.push(i);
       }
     }
 
-    arrPage.forEach(el => {
-      let pageNumber = document.createElement("div");
+    arrPage.forEach((el) => {
+      const pageNumber = document.createElement("div");
       pageNumber.className = "page__number";
       pageNumber.innerHTML = el;
       this.paginationBlock.appendChild(pageNumber);
     });
-  
   }
 
   pagination() {
     this.paginationBlock.innerHTML = "";
-    let arrPage = [];
+    const arrPage = [];
     let pageLength = this.page.children.length;
     let i = 1;
     while (pageLength > 7) {
       arrPage.push(i);
-      i++;
-      pageLength = pageLength - 7;
+      i += 1;
+      pageLength -= 7;
       if (pageLength < 7) {
         arrPage.push(i);
       }
     }
 
-    arrPage.forEach(el => {
-      let pageNumber = document.createElement("div");
+    arrPage.forEach((el) => {
+      const pageNumber = document.createElement("div");
       pageNumber.className = "page__number";
       pageNumber.innerHTML = el;
       this.paginationBlock.appendChild(pageNumber);
     });
-    for (let i = 0; i < this.page.children.length; i++) {
+    for (let i = 0; i < this.page.children.length; i += 1) {
       if (i >= 7) {
-       
         this.page.children[i].classList.add("hide");
       }
     }
-    this.paginationBlock.addEventListener("click", event => {
-       const buttonB = document.querySelectorAll('.car__block-buttonB')
-       for (let i = 0; i < buttonB.length; i++) {
-         buttonB[i].click();
-       }
-      if (event.target.className == "page__number") {
+    this.paginationBlock.addEventListener("click", (event) => {
+      const buttonB = document.querySelectorAll(".car__block-buttonB");
+      for (let i = 0; i < buttonB.length; i += 1) {
+        buttonB[i].click();
+      }
+      if (event.target.className === "page__number") {
         const pageCount = document.querySelector(".page-count");
         const numberPage = Number(event.target.innerHTML);
         pageCount.innerHTML = numberPage;
         if (numberPage === 1) {
-          for (let i = 0; i < this.page.children.length; i++) {
+          for (let i = 0; i < this.page.children.length; i += 1) {
             if (i >= 7) {
               this.page.children[i].classList.add("hide");
             } else {
@@ -233,7 +236,7 @@ export default class Car {
             }
           }
         } else {
-          for (let i = 0; i < this.page.children.length; i++) {
+          for (let i = 0; i < this.page.children.length; i += 1) {
             if (i >= 7 * (numberPage - 1) && i <= 7 * numberPage - 1) {
               this.page.children[i].classList.remove("hide");
             } else {
@@ -244,8 +247,9 @@ export default class Car {
       }
     });
   }
+
   appendSVG(color) {
-    let svgStr = `<svg version="1.1" id="Capa_1" width="40px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    const svgStr = `<svg version="1.1" id="Capa_1" width="40px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
     viewBox="0 0 404.243 404.243" style="enable-background:new 0 0 404.243 404.243;" xml:space="preserve">
  <g>
    <path style="fill:${color};" d="M394.444,252.603l-4.552-0.091v-15.73c3.752-1.441,6.421-5.069,6.421-9.329
@@ -274,8 +278,9 @@ export default class Car {
  </svg>`;
     return svgStr;
   }
+
   appendSvgFlag() {
-    let str = `<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    const str = `<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
     width="37.979px" height="37.979px" viewBox="0 0 37.979 37.979" style="enable-background:new 0 0 37.979 37.979;"
     xml:space="preserve">
  <g>
@@ -299,133 +304,132 @@ export default class Car {
  </svg>`;
     return str;
   }
+
   garageCount(flag) {
-    let garageCount = document.querySelector(".garage-count");
+    const garageCount = document.querySelector(".garage-count");
     let count = Number(garageCount.innerHTML);
     if (flag) {
-      count++;
+      count += 1;
     } else {
-      count--;
+      count += 1;
     }
     garageCount.innerHTML = count;
   }
+
   removeBlockCar(block) {
     const nextNode = block.parentNode.parentNode.nextSibling;
     this.checkNextSibling(nextNode);
 
     block.parentNode.parentNode.remove();
     const nameCar = block.parentNode.children[2].innerHTML;
-    const colorCar =
-      block.parentNode.parentNode.children[1].children[2].children[0]
-        .children[0].children[0].style.fill;
+    const colorCar = block.parentNode.parentNode.children[1].children[2].children[0]
+      .children[0].children[0].style.fill;
     const color = `#${this.getHexRGBColor(colorCar)}`;
     removeCar(nameCar, color);
   }
+
   checkNextSibling(nextNode) {
     if (nextNode == null) {
       return;
     }
-    if (nextNode.className == "car__block hide") {
+    if (nextNode.className === "car__block hide") {
       nextNode.className = "car__block";
     } else {
       this.checkNextSibling(nextNode.nextSibling);
     }
   }
 
-  
   updateButton() {
     const page = document.querySelector(".page");
-    let nameCarUpdate = document.querySelector(".name__car-update");
-    let colorCarUpdate = document.querySelector(".color__car-update");
-    for (let i = 0; i < page.children.length; i++) {
-      if (page.children[i].className == "car__block active") {
-        if (nameCarUpdate.value == "") {
+    const nameCarUpdate = document.querySelector(".name__car-update");
+    const colorCarUpdate = document.querySelector(".color__car-update");
+    for (let i = 0; i < page.children.length; i += 1) {
+      if (page.children[i].className === "car__block active") {
+        if (nameCarUpdate.value === "") {
           alert("Entry name car!");
           return;
         }
-        let nameCar = page.children[i].children[0].children[2].innerHTML;
-        let colorCar =
-          page.children[i].children[1].children[2].children[0].children[0]
-            .children[0].style.fill;
+        const nameCar = page.children[i].children[0].children[2].innerHTML;
+        const colorCar = page.children[i].children[1].children[2].children[0].children[0]
+          .children[0].style.fill;
         updateCar(nameCar, this.getHexRGBColor(colorCar));
-        page.children[i].children[0].children[2].innerHTML =
-          nameCarUpdate.value;
+        page.children[i].children[0].children[2].innerHTML = nameCarUpdate.value;
         page.children[
           i
-        ].children[1].children[2].children[0].children[0].children[0].style.fill =
-          colorCarUpdate.value;
+        ].children[1].children[2].children[0].children[0].children[0].style.fill = colorCarUpdate.value;
         page.children[
           i
-        ].children[1].children[2].children[0].children[0].children[1].style.fill =
-          colorCarUpdate.value;
+        ].children[1].children[2].children[0].children[0].children[1].style.fill = colorCarUpdate.value;
         page.children[
           i
-        ].children[1].children[2].children[0].children[0].children[2].style.fill =
-          colorCarUpdate.value;
+        ].children[1].children[2].children[0].children[0].children[2].style.fill = colorCarUpdate.value;
       }
     }
   }
-  async createCar() {
-    let url = "http://127.0.0.1:3000/garage";
 
-    let dataParams = {
+  async createCar() {
+    const url = "http://127.0.0.1:3000/garage";
+
+    const dataParams = {
       name: this.nameCar,
       color: this.colorCar,
     };
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(dataParams),
     });
-    let result = await response.json();
+    const result = await response.json();
   }
-  
 
-  async writeWinner(winner){
-    let url = "http://127.0.0.1:3000/winners";
+  async writeWinner(winner) {
+    const url = "http://127.0.0.1:3000/winners";
 
-    let dataParams = {
+    const dataParams = {
       wins: 1,
       time: winner.time,
       name: winner.name,
       car: winner.carSvg,
     };
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(dataParams),
     });
-    let result = await response.json();
+    const result = await response.json();
   }
+
   disabledUpdate() {
-    let nameCarUpdate = document.querySelector(".name__car-update");
-    let colorCarUpdate = document.querySelector(".color__car-update");
-    let buttonUpdate = document.querySelector(".button__update");
+    const nameCarUpdate = document.querySelector(".name__car-update");
+    const colorCarUpdate = document.querySelector(".color__car-update");
+    const buttonUpdate = document.querySelector(".button__update");
     nameCarUpdate.disabled = !nameCarUpdate.disabled;
     colorCarUpdate.disabled = !colorCarUpdate.disabled;
     buttonUpdate.disabled = !buttonUpdate.disabled;
   }
+
   getHexRGBColor(color) {
     color = color.replace(/\s/g, "");
-    let aRGB = color.match(
-      /^rgb\((\d{1,3}[%]?),(\d{1,3}[%]?),(\d{1,3}[%]?)\)$/i
+    const aRGB = color.match(
+      /^rgb\((\d{1,3}[%]?),(\d{1,3}[%]?),(\d{1,3}[%]?)\)$/i,
     );
     if (aRGB) {
       color = "";
-      for (var i = 1; i <= 3; i++)
+      for (let i = 1; i <= 3; i += 1) {
         color += Math.round(
-          (aRGB[i][aRGB[i].length - 1] == "%" ? 2.55 : 1) * parseInt(aRGB[i])
+          (aRGB[i][aRGB[i].length - 1] === "%" ? 2.55 : 1) * parseInt(aRGB[i], 10),
         )
           .toString(16)
           .replace(/^(.)$/, "0$1");
-    } else
-      color = color.replace(/^#?([\da-f])([\da-f])([\da-f])$/i, "$1$1$2$2$3$3");
+      }
+    } else color = color.replace(/^#?([\da-f])([\da-f])([\da-f])$/i, "$1$1$2$2$3$3");
     return color;
   }
+
   getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   }
