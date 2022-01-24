@@ -150,7 +150,6 @@ export default class Car {
   checkWin(width, carBlock, nameCar){
     if(winnerCarArr.length > 0){
       winnerCarArr.splice(0, winnerCarArr.length - 1)
-      console.log(winnerCarArr);
     }
     if(carBlock >= width - (width / 10)){
       winnerCarArr.push(nameCar);
