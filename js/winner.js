@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 export default class Winner {
   constructor(velocity, event) {
     this.numberBlock = document.querySelector(".number__id");
@@ -12,7 +13,6 @@ export default class Winner {
 
   addInTableWinners(velocity, event) {
     if (velocity >= 100) {
-      // eslint-disable-next-line no-param-reassign
       velocity /= 10;
     }
 

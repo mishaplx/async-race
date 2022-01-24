@@ -1,6 +1,10 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable consistent-return */
+/* eslint-disable no-new */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-alert */
 import Car from "./car.js";
 import { dataNameCar, dataNameCar2 } from "./data.js";
-
 
 export default class Garage {
   constructor(state) {
@@ -39,7 +43,6 @@ export default class Garage {
     });
     this.raceButton.addEventListener("click", (event) => {
       if (!this.page.children.length) {
-        // eslint-disable-next-line no-alert
         alert("Create car");
       } else {
         this.raceAll(event.target);
@@ -65,38 +68,30 @@ export default class Garage {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   renderState(state) {
     state.forEach((el) => {
-      // eslint-disable-next-line no-new
       new Car(el.name, el.color);
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   getHexRGBColor(color) {
-    // eslint-disable-next-line no-param-reassign
     color = color.replace(/\s/g, "");
     const aRGB = color.match(
       /^rgb\((\d{1,3}[%]?),(\d{1,3}[%]?),(\d{1,3}[%]?)\)$/i,
     );
     if (aRGB) {
-      // eslint-disable-next-line no-param-reassign
       color = "";
       for (let i = 1; i <= 3; i += 1) {
-        // eslint-disable-next-line no-param-reassign
         color += Math.round(
           (aRGB[i][aRGB[i].length - 1] === "%" ? 2.55 : 1) * parseInt(aRGB[i], 10),
         )
           .toString(16)
           .replace(/^(.)$/, "0$1");
       }
-    // eslint-disable-next-line no-param-reassign
     } else { color = color.replace(/^#?([\da-f])([\da-f])([\da-f])$/i, "$1$1$2$2$3$3"); }
     return color;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   raceAll() {
     const buttonA = document.querySelectorAll(".car__block-buttonA");
     for (let i = 0; i < buttonA.length; i += 1) {
@@ -106,7 +101,6 @@ export default class Garage {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   resetAll() {
     const buttonB = document.querySelectorAll(".car__block-buttonB");
     for (let i = 0; i < buttonB.length; i += 1) {
@@ -114,12 +108,10 @@ export default class Garage {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   getRandomColor(min, max) {
     return Math.random() * (max - min) + min;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   getRandomName(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   }
@@ -128,13 +120,11 @@ export default class Garage {
     return this.inputColorCarCreate.value;
   }
 
-  // eslint-disable-next-line consistent-return
   getNameCreate() {
     if (this.inputNameCarCreate.value.length) {
       return this.inputNameCarCreate.value;
     }
 
-    // eslint-disable-next-line no-alert
     alert("Entry name car!");
   }
 }

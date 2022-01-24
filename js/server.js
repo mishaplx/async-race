@@ -1,3 +1,7 @@
+/* eslint-disable no-new */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-shadow */
+/* eslint-disable consistent-return */
 import Winner from "./winner.js";
 
 export async function getCar() {
@@ -7,7 +11,6 @@ export async function getCar() {
   return result;
 }
 
-// eslint-disable-next-line consistent-return
 export async function getCarID(nameCar, colorCar) {
   const colorEl = `#${colorCar}`;
   const url = "http://127.0.0.1:3000/garage";
@@ -26,7 +29,6 @@ export async function removeCar(nameCar, colorCar) {
   const data = await response.json();
   data.forEach((el) => {
     if (el.name === nameCar && el.color === colorCar) {
-      // eslint-disable-next-line no-shadow
       const url = `http://127.0.0.1:3000/garage/${el.id}`;
       fetch(url, { method: "DELETE" });
     }
@@ -44,7 +46,6 @@ export async function updateCar(nameCar, colorCar) {
   const data = await response.json();
   data.forEach((el) => {
     if (el.name === nameCar && el.color === `#${colorCar}`) {
-      // eslint-disable-next-line no-shadow
       const url = `http://127.0.0.1:3000/garage/${el.id}`;
       fetch(url, {
         method: "PUT",
@@ -65,7 +66,6 @@ export async function StartStopCarsEngine(numberid, status) {
 }
 export function animation(velocity, event, status) {
   if (velocity >= 100) {
-    // eslint-disable-next-line no-param-reassign
     velocity /= 10;
   }
 
@@ -90,6 +90,5 @@ export async function SwitchCasEnginetoDriveMode(numberid) {
 }
 
 export function winner(velocity, event) {
-  // eslint-disable-next-line no-new
   new Winner(velocity, event);
 }

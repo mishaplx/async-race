@@ -109,9 +109,7 @@ export default class Car {
     });
 
     carButtonA.addEventListener("click", (event) => {
-      // eslint-disable-next-line no-shadow
       const nameCar = event.target.parentNode.parentNode.children[0].children[2].innerHTML;
-      // eslint-disable-next-line max-len
       const colorCar = event.target.parentNode.parentNode.children[1].children[2].children[0].children[0].children[0].style.fill;
 
       const id = getCarID(nameCar, this.getHexRGBColor(colorCar))
