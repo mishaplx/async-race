@@ -130,7 +130,7 @@ export default class Car {
      
         let x = setInterval(()=>{
           this.checkWin(parentNode.offsetWidth,carBlock.offsetLeft, nameCar)
-        },1000)
+        },500)
         if (this.flag){
 
           clearInterval(x)
@@ -138,6 +138,7 @@ export default class Car {
         this.flag = false
 
       carButtonB.addEventListener("click", event => {
+        this.winBlock.style.display = "none"
         clearInterval(x)
         let parentNode = event.target.parentNode; 
         parentNode.children[2].classList.remove('startAnumation')
@@ -147,13 +148,17 @@ export default class Car {
     this.garageCount(true);
   }
   checkWin(width, carBlock, nameCar){
+    if(winnerCarArr.length > 0){
+      winnerCarArr.splice(0, winnerCarArr.length - 1)
+      console.log(winnerCarArr);
+    }
     if(carBlock >= width - (width / 10)){
       winnerCarArr.push(nameCar);
       this.winBlock.innerHTML = `${winnerCarArr[0]} WINS!!!`
       this.winBlock.style.display = 'block'
       this.flag = true
-      return this.flag
     }
+    
   }
   checkPagination() {
     
