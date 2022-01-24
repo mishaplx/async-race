@@ -201,7 +201,9 @@ input[type="text"] {
   position: absolute;
   top: 50%;
   left: 50%;
-  color: #9edb0e;
-  font-size: 20px;
+  color: #11ff09;
+  font-size: 26px;
+  font-weight: 600;
+  text-shadow: #FC0 1px 0 10px;
 }
 /*# sourceMappingURL=style.css.map */

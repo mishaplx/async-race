@@ -12,6 +12,7 @@ export default class Garage{
     this.generateButton = document.querySelector('.button-menu-generate')
     this.raceButton = document.querySelector('.button-menu-race')
     this.resetButton = document.querySelector('.button-menu-reset')
+    this.winBlock = document.querySelector('.win')
     this.page = document.querySelector('.page')
     this.garage = document.querySelector('.garage')
     this.winnersButton = document.querySelector('.button__view-winner')
@@ -47,6 +48,7 @@ export default class Garage{
     })
     this.resetButton.addEventListener('click', () =>{
       this.resetAll();
+      this.winBlock.style.display = 'none';
     })
     this.winnersButton.addEventListener('click', () =>{
       this.garage.style.display = 'none';

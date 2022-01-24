@@ -1,5 +1,6 @@
 
 import { StartStopCarsEngine, winner, animation, removeCar, updateCar,SwitchCasEnginetoDriveMode,getCarID } from './server.js'
+import { winnerCarArr } from './data.js'
 export default class Car {
   constructor(nameCar, colorCar) {
     this.countAddEvent = 0;
@@ -7,9 +8,10 @@ export default class Car {
     this.colorCar = colorCar;
     this.page = document.querySelector(".page");
     this.createBlockCar(this.nameCar, this.colorCar);
-    
+    this.winBlock = document.querySelector('.win')
     this.winner = document.querySelector(".button__view-winner");
     this.paginationBlock = document.querySelector(".pagination");
+    this.flag = false;
     this.winner.addEventListener("click", () => {});
     if (this.page.children.length > 7) {
       this.pagination();
@@ -100,7 +102,7 @@ export default class Car {
     carButtonA.addEventListener("click", event => {
       let nameCar = event.target.parentNode.parentNode.children[0].children[2].innerHTML
       let colorCar = event.target.parentNode.parentNode.children[1].children[2].children[0].children[0].children[0].style.fill;
-      
+     
       let id = getCarID(nameCar,this.getHexRGBColor(colorCar))
       .then(function(data){
       let userid = JSON.parse(data);
@@ -122,16 +124,41 @@ export default class Car {
         animation(0, event.target,false)
       })
       }) 
+      let parentNode = event.target.parentNode.parentNode
+      const carBlock = event.target.parentNode.children[2]
+      
+     
+        let x = setInterval(()=>{
+          this.checkWin(parentNode.offsetWidth,carBlock.offsetLeft, nameCar)
+        },1000)
+        if (this.flag){
+
+          clearInterval(x)
+        }
+        this.flag = false
+
       carButtonB.addEventListener("click", event => {
-        let parentNode = event.target.parentNode;
-        
+        clearInterval(x)
+        let parentNode = event.target.parentNode; 
         parentNode.children[2].classList.remove('startAnumation')
       });
     });
  
     this.garageCount(true);
   }
-
+  checkWin(width, carBlock, nameCar){
+    
+    if(carBlock >= width - 100){
+      winnerCarArr.push(nameCar);
+      this.winBlock.innerHTML = `${winnerCarArr[0]} WINS!!!`
+      this.winBlock.style.display = 'block'
+      this.flag = true
+      return this.flag
+    }
+//console.log(width);
+//console.log(carBlock);
+//console.log(winnerCarArr);
+  }
   checkPagination() {
     
     this.paginationBlock.innerHTML = "";
