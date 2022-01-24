@@ -92,7 +92,6 @@ export default class Car {
       });
     });
     buttonRemove.addEventListener("click", event => {
-     // debugger;
       this.removeBlockCar(event.target);
       this.garageCount(false);
       this.checkPagination();
@@ -121,7 +120,6 @@ export default class Car {
         
         parentNode.children[2].style.left = `0%`;
         animation(0, event.target,false)
-        //console.log(err);
       })
       }) 
       carButtonB.addEventListener("click", event => {
@@ -163,7 +161,6 @@ export default class Car {
     this.paginationBlock.innerHTML = "";
     let arrPage = [];
     let pageLength = this.page.children.length;
-    //debugger
     let i = 1;
     while (pageLength > 7) {
       arrPage.push(i);
@@ -187,10 +184,10 @@ export default class Car {
       }
     }
     this.paginationBlock.addEventListener("click", event => {
-      // const buttonB = document.querySelectorAll('.car__block-buttonB')
-      // for (let i = 0; i < buttonB.length; i++) {
-      //   buttonB[i].click();
-      // }
+       const buttonB = document.querySelectorAll('.car__block-buttonB')
+       for (let i = 0; i < buttonB.length; i++) {
+         buttonB[i].click();
+       }
       if (event.target.className == "page__number") {
         const pageCount = document.querySelector(".page-count");
         const numberPage = Number(event.target.innerHTML);
@@ -204,7 +201,6 @@ export default class Car {
             }
           }
         } else {
-          //debugger
           for (let i = 0; i < this.page.children.length; i++) {
             if (i >= 7 * (numberPage - 1) && i <= 7 * numberPage - 1) {
               this.page.children[i].classList.remove("hide");
@@ -282,7 +278,6 @@ export default class Car {
     garageCount.innerHTML = count;
   }
   removeBlockCar(block) {
-    //debugger;
     const nextNode = block.parentNode.parentNode.nextSibling;
     this.checkNextSibling(nextNode);
 
@@ -295,7 +290,6 @@ export default class Car {
     removeCar(nameCar, color);
   }
   checkNextSibling(nextNode) {
-   // debugger;
     if (nextNode == null) {
       return;
     }
@@ -304,7 +298,6 @@ export default class Car {
     } else {
       this.checkNextSibling(nextNode.nextSibling);
     }
-    //console.log(nextNode);
   }
 
   
@@ -322,7 +315,6 @@ export default class Car {
         let colorCar =
           page.children[i].children[1].children[2].children[0].children[0]
             .children[0].style.fill;
-            console.log(colorCar);
         updateCar(nameCar, this.getHexRGBColor(colorCar));
         page.children[i].children[0].children[2].innerHTML =
           nameCarUpdate.value;

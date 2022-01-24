@@ -6,7 +6,6 @@ export async function getCar() {
   return result;
 }
 export async function getCarID(nameCar, colorCar) {
-  //debugger
   let colorEl = `#${colorCar}`;
   let url = "http://127.0.0.1:3000/garage";
   let response = await fetch(url);
@@ -32,7 +31,6 @@ export async function removeCar(nameCar, colorCar) {
 export async function updateCar(nameCar, colorCar) {
   let nameCarUpdate = document.querySelector(".name__car-update");
   let colorCarUpdate = document.querySelector(".color__car-update");
-  console.log(colorCarUpdate.value);
   let obj = {
     name: nameCarUpdate.value,
     color: colorCarUpdate.value,
@@ -56,7 +54,6 @@ export async function updateCar(nameCar, colorCar) {
 
 export async function StartStopCarsEngine(numberid, status) {
   let url = `http://127.0.0.1:3000/engine/?id=${numberid}&status=${status}`;
-  // debugger
   let response = await fetch(url, { method: "PATCH" });
   const result = await response.json();
   return result;
@@ -64,7 +61,6 @@ export async function StartStopCarsEngine(numberid, status) {
 export async function SwitchCasEnginetoDriveMode(numberid) {
   try {
     let url = `http://127.0.0.1:3000/engine/?id=${numberid}&status=drive`;
-    //debugger
     let response = await fetch(url, { method: "PATCH" });
     const res = await response.json();
     return res;
@@ -74,7 +70,6 @@ export async function SwitchCasEnginetoDriveMode(numberid) {
 }
 export function animation(velocity, event, status) {
   if (velocity >= 100) {
-    // debugger
     velocity = velocity / 10;
   } else {
     velocity = velocity;

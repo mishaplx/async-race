@@ -27,7 +27,7 @@ export default class Garage{
       car.createCar();
     })
     this.generateButton.addEventListener('click', () =>{
-      let i = 10;
+      let i = 100;
       while(i !== 0){
         let color = `rgb(${Math.floor(this.getRandomColor(0,255))},${Math.floor(this.getRandomColor(0,255))},${Math.floor(this.getRandomColor(0,255))})`
         const car = new Car(`${dataNameCar[this.getRandomName(0, dataNameCar.length)]}-${dataNameCar2[this.getRandomName(0, dataNameCar2.length)]}` , `#${this.getHexRGBColor(color)}`);
@@ -68,11 +68,6 @@ export default class Garage{
     state.forEach((el)=>{
       const car = new Car(el.name, el.color)
     })
-    //console.log(state);
-   // while(i !== 0){
-    //  const car = new Car(state[i].name, state[i].color);
-    //  i--
-   // }
   }
   getHexRGBColor(color) {
     color = color.replace(/\s/g, "");
