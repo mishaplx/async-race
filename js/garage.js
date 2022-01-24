@@ -1,6 +1,7 @@
 import Car from "./car.js";
 import { dataNameCar, dataNameCar2 } from "./data.js";
 
+
 export default class Garage {
   constructor(state) {
     this.state = state;
