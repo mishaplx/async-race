@@ -30,6 +30,7 @@ export default class Garage {
       const colorCar = this.getColorCreate();
       const nameCar = this.getNameCreate();
       const car = new Car(nameCar, colorCar);
+      this.inputNameCarCreate.value = "";
       car.createCar();
     });
     this.generateButton.addEventListener("click", () => {
@@ -65,6 +66,7 @@ export default class Garage {
       this.inpCreate.style.display = "block";
       this.buttonMenu.style.display = "block";
       this.winnersBlock.style.display = "none";
+      this.resetAll();
     });
   }
 

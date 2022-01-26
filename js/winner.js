@@ -15,7 +15,6 @@ export default class Winner {
     if (velocity >= 100) {
       velocity /= 10;
     }
-
     const carSvgBlock = event.parentNode.children[2].cloneNode(true);
     carSvgBlock.classList.remove("startAnumation");
     const nameCar = event.parentNode.parentNode.children[0].children[2].innerHTML;

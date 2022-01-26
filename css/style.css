@@ -144,6 +144,10 @@ input[type="text"] {
   position: relative;
 }
 
+.svg__car svg {
+  margin-bottom: -10px;
+}
+
 .flag__block {
   position: absolute;
   top: 0;
@@ -207,5 +211,11 @@ input[type="text"] {
   font-size: 26px;
   font-weight: 600;
   text-shadow: #FC0 1px 0 10px;
+}
+
+.disable__button {
+  background-color: black;
+  border: 1px solid #636363;
+  color: #636363;
 }
 /*# sourceMappingURL=style.css.map */

@@ -1,16 +1,19 @@
+/* eslint-disable no-new */
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 import {
-  StartStopCarsEngine, winner, animation,
+  StartStopCarsEngine, animation,
   removeCar, updateCar, SwitchCasEnginetoDriveMode, getCarID,
 } from "./server.js";
 import { winnerCarArr } from "./data.js";
+import Winner from "./winner.js";
 
 export default class Car {
   constructor(nameCar, colorCar) {
+    this.carBlockWidth = undefined;
     this.mainWin = undefined;
     this.countAddEvent = 0;
     this.nameCar = nameCar;
@@ -42,7 +45,7 @@ export default class Car {
     const carButtonB = document.createElement("button");
     carButtonB.className = "car__block-buttonB";
     carButtonB.innerHTML = "B";
-
+    carButtonB.classList.add("disable__button");
     const carImgBlock = document.createElement("div");
     carImgBlock.className = "car__block-img";
 
@@ -83,7 +86,6 @@ export default class Car {
       const page = document.querySelector(".page");
       const { parentNode } = event.target.parentNode;
       parentNode.classList.toggle("active");
-
       for (let i = 0; i < page.children.length; i += 1) {
         if (page.children[i].className === "car__block active") {
           flag += 1;
@@ -109,9 +111,10 @@ export default class Car {
     });
 
     carButtonA.addEventListener("click", (event) => {
+      carButtonB.classList.remove("disable__button");
+      carButtonA.classList.add("disable__button");
       const nameCar = event.target.parentNode.parentNode.children[0].children[2].innerHTML;
       const colorCar = event.target.parentNode.parentNode.children[1].children[2].children[0].children[0].children[0].style.fill;
-
       const id = getCarID(nameCar, this.getHexRGBColor(colorCar))
         .then((data) => {
           const userid = JSON.parse(data);
@@ -119,7 +122,7 @@ export default class Car {
           StartStopCarsEngine(userid, "started")
             .then((result) => {
               animation(result.velocity, event.target, true);
-              winner(result.velocity, event.target);
+              new Winner(result.velocity, event.target);
             });
           SwitchCasEnginetoDriveMode(userid)
             .then((result) => {
@@ -128,8 +131,7 @@ export default class Car {
             .then()
             .catch((err) => {
               const { parentNode } = event.target;
-
-              parentNode.children[2].style.left = "0%";
+              parentNode.children[2].style.left = `${this.carBlockWidth}px`;
               animation(0, event.target, false);
             });
         });
@@ -139,32 +141,35 @@ export default class Car {
       const x = setInterval(() => {
         this.checkWin(parentNode.offsetWidth, carBlock.offsetLeft, nameCar);
         if (this.winBlock.style.display === "block") {
+          setTimeout(() => {
+            this.winBlock.style.display = "none";
+          }, 2000);
           clearInterval(x);
         }
-      }, 500);
-
+      }, 1000);
       carButtonB.addEventListener("click", (event) => {
+        carButtonB.classList.add("disable__button");
+        carButtonA.classList.remove("disable__button");
         this.winBlock.style.display = "none";
         clearInterval(x);
         const { parentNode } = event.target;
         parentNode.children[2].classList.remove("startAnumation");
+        parentNode.children[2].style.left = `${0}px`;
       });
     });
-
     this.garageCount(true);
   }
 
   checkWin(width, carBlock, nameCar) {
+    this.carBlockWidth = carBlock;
     if (carBlock >= width - (width / 10)) {
       winnerCarArr.push(nameCar);
       if (winnerCarArr.length > 1) {
         for (let i = 0; i < winnerCarArr.length; i += 1)winnerCarArr.splice(i);
-        console.log(winnerCarArr);
         return;
       }
       this.winBlock.innerHTML = `${winnerCarArr[winnerCarArr.length - 1]} WINS!!!`;
       this.winBlock.style.display = "block";
-      console.log(winnerCarArr);
     }
   }
 

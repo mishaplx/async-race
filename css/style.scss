@@ -122,6 +122,9 @@ $colorblueButtonActive: rgb(66, 116, 117);
 .svg__car{
   display: inline-block;
   position: relative;
+  svg{
+    margin-bottom: -10px;
+  }
 }
 .flag__block{
   position: absolute;
@@ -175,4 +178,9 @@ $colorblueButtonActive: rgb(66, 116, 117);
   font-size: 26px;
   font-weight: 600;
   text-shadow: #FC0 1px 0 10px;;
+}
+.disable__button{
+  background-color: black;
+  border: 1px solid #636363;
+  color: #636363;
 }

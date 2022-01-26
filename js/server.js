@@ -2,7 +2,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
 /* eslint-disable consistent-return */
-import Winner from "./winner.js";
 
 export async function getCar() {
   const url = "http://127.0.0.1:3000/garage";
@@ -87,8 +86,4 @@ export async function SwitchCasEnginetoDriveMode(numberid) {
   } catch (err) {
     animation(0, 0, false);
   }
-}
-
-export function winner(velocity, event) {
-  new Winner(velocity, event);
 }
