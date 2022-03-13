@@ -1,167 +1,258 @@
-export default class Car{
-  constructor(nameCar, colorCar){
+/* eslint-disable no-new */
+/* eslint-disable max-len */
+/* eslint-disable no-param-reassign */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-vars */
+import {
+  StartStopCarsEngine, animation,
+  removeCar, updateCar, SwitchCasEnginetoDriveMode, getCarID,
+} from "./server.js";
+import { winnerCarArr } from "./data.js";
+import Winner from "./winner.js";
+
+export default class Car {
+  constructor(nameCar, colorCar) {
+    this.carBlockWidth = undefined;
+    this.mainWin = undefined;
     this.countAddEvent = 0;
     this.nameCar = nameCar;
     this.colorCar = colorCar;
-    this.page = document.querySelector('.page');
-    this.createBlockCar(this.nameCar, this.colorCar)
-    this.arrRes = [];
-    this.winner = document.querySelector('.button__view-winner')
-    this.paginationBlock = document.querySelector('.pagination')
-    if (this.paginationBlock.children.length !== 0){
-      this.paginationBlock.addEventListener('click',(event)=>{
-        if (event.target.className == 'page__number'){
-          alert('asofjh')
-        }
-      })
+    this.page = document.querySelector(".page");
+    this.createBlockCar(this.nameCar, this.colorCar);
+    this.winBlock = document.querySelector(".win");
+    this.winner = document.querySelector(".button__view-winner");
+    this.paginationBlock = document.querySelector(".pagination");
+    this.flag = false;
+    this.winner.addEventListener("click", () => {});
+    if (this.page.children.length > 7) {
+      this.pagination();
     }
-    this.winner.addEventListener('click', ()=>{
-      console.log(this.arrRes);
-    })
-    if (this.page.children.length > 7){
-      this.pagination()
-    }
+    this.checkPagination();
   }
-  start(){
-    console.log('create block car');
-  }
-  createBlockCar(nameCar, colorCar){
-    const carBlock = document.createElement('div')
-    carBlock.className = 'car__block'
 
-    const carButonBlock = document.createElement('div')
-    carButonBlock.className = 'car__block-button'
+  createBlockCar(nameCar, colorCar) {
+    const carBlock = document.createElement("div");
+    carBlock.className = "car__block";
 
-    const carButtonA = document.createElement('button')
-    carButtonA.className = 'car__block-buttonA'
-    carButtonA.innerHTML = 'A'
+    const carButonBlock = document.createElement("div");
+    carButonBlock.className = "car__block-button";
 
-    const carButtonB = document.createElement('button')
-    carButtonB.className = 'car__block-buttonB'
-    carButtonB.innerHTML = 'B'
+    const carButtonA = document.createElement("button");
+    carButtonA.className = "car__block-buttonA";
+    carButtonA.innerHTML = "A";
 
-    const carImgBlock = document.createElement('div')
-    carImgBlock.className = 'car__block-img'
+    const carButtonB = document.createElement("button");
+    carButtonB.className = "car__block-buttonB";
+    carButtonB.innerHTML = "B";
+    carButtonB.classList.add("disable__button");
+    const carImgBlock = document.createElement("div");
+    carImgBlock.className = "car__block-img";
 
-    const buttonSelect = document.createElement('button')
-    buttonSelect.innerHTML = 'select';
-    buttonSelect.className = 'button__select button-blue'
+    const buttonSelect = document.createElement("button");
+    buttonSelect.innerHTML = "select";
+    buttonSelect.className = "button__select button-blue";
 
-    const buttonRemove = document.createElement('button')
-    buttonRemove.innerHTML = 'remove';
-    buttonRemove.className = 'button__remove button-blue'
+    const buttonRemove = document.createElement("button");
+    buttonRemove.innerHTML = "remove";
+    buttonRemove.className = "button__remove button-blue";
 
-    const carNameBlock = document.createElement('span')
-    carNameBlock.className = 'name__car'
+    const carNameBlock = document.createElement("span");
+    carNameBlock.className = "name__car";
     carNameBlock.innerHTML = nameCar;
-    const svgCar = document.createElement('div')
-    svgCar.className = 'svg__car'
-    svgCar.innerHTML = this.appendSVG(colorCar)
+    const svgCar = document.createElement("div");
+    svgCar.className = "svg__car";
+    svgCar.innerHTML = this.appendSVG(colorCar);
 
-    const flagSvg = document.createElement('div')
-    flagSvg.className = 'flag__block'
-    flagSvg.innerHTML = this.appendSvgFlag()
+    const flagSvg = document.createElement("div");
+    flagSvg.className = "flag__block";
+    flagSvg.innerHTML = this.appendSvgFlag();
 
-    carButonBlock.appendChild(buttonSelect)
-    carButonBlock.appendChild(buttonRemove)
-    carButonBlock.appendChild(carNameBlock)
+    carButonBlock.appendChild(buttonSelect);
+    carButonBlock.appendChild(buttonRemove);
+    carButonBlock.appendChild(carNameBlock);
 
-    carBlock.appendChild(carButonBlock)
+    carBlock.appendChild(carButonBlock);
     carBlock.appendChild(carImgBlock);
-    
-    carImgBlock.appendChild(carButtonA)
-    carImgBlock.appendChild(carButtonB)
-    carImgBlock.appendChild(svgCar)
+
+    carImgBlock.appendChild(carButtonA);
+    carImgBlock.appendChild(carButtonB);
+    carImgBlock.appendChild(svgCar);
     carImgBlock.appendChild(flagSvg);
 
     this.page.appendChild(carBlock);
-    let flag = 0
-    buttonSelect.addEventListener('click',(event) =>{
-      const page = document.querySelector('.page')
-      let parentNode =  event.target.parentNode.parentNode
-      parentNode.classList.toggle('active')
-      
-      
-      for (let i = 0; i < page.children.length; i++) {
-        if(page.children[i].className == 'car__block active') {
-          flag++
+    let flag = 0;
+    buttonSelect.addEventListener("click", (event) => {
+      const page = document.querySelector(".page");
+      const { parentNode } = event.target.parentNode;
+      parentNode.classList.toggle("active");
+      for (let i = 0; i < page.children.length; i += 1) {
+        if (page.children[i].className === "car__block active") {
+          flag += 1;
         }
       }
-      
-      let buttonUpdate = document.querySelector('.button__update')
-      if (flag == 2){
-        parentNode.classList.remove('active')
-        flag = 0
-      }
-      else{
-        this.disabledUpdate()
-      }
-      console.log(flag);
-     
-   
-      buttonUpdate.addEventListener('click', (event) => {
-        this.updateButton()
-      })
-    })
-    buttonRemove.addEventListener('click',(event) =>{
-      this.removeBlockCar(event.target)
-    })
-    
-    carButtonA.addEventListener('click',(event) =>{
-      const parentNode = event.target.parentNode
-      let left = 0
-      const speed = this.getRandom(1,100)
-      const S = carImgBlock.offsetWidth;
-      const time = (S / 100 / speed).toFixed(2)
 
-      console.log('speed: m/s ' + speed);
-      console.log('Путь:',carImgBlock.offsetWidth);
-      console.log('time', ((S / 100 / speed)).toFixed(2));
-      console.log('\n');
-      this.arrRes.push(time)
-      console.log(this.arrRes);
+      const buttonUpdate = document.querySelector(".button__update");
+      if (flag === 2) {
+        parentNode.classList.remove("active");
+        flag = 0;
+      } else {
+        this.disabledUpdate();
+      }
 
-      let x =  setInterval(() => {
-        left = left + speed
-        parentNode.children[2].style.left = `${left}px`;
-       
-        if (parseInt(parentNode.children[2].style.left, 10) >= carImgBlock.offsetWidth - speed - 100){
-          clearInterval(x)
+      buttonUpdate.addEventListener("click", () => {
+        this.updateButton();
+      });
+    });
+    buttonRemove.addEventListener("click", (event) => {
+      this.removeBlockCar(event.target);
+      this.garageCount(false);
+      this.checkPagination();
+    });
+
+    carButtonA.addEventListener("click", (event) => {
+      carButtonB.classList.remove("disable__button");
+      carButtonA.classList.add("disable__button");
+      const nameCar = event.target.parentNode.parentNode.children[0].children[2].innerHTML;
+      const colorCar = event.target.parentNode.parentNode.children[1].children[2].children[0].children[0].children[0].style.fill;
+      const id = getCarID(nameCar, this.getHexRGBColor(colorCar))
+        .then((data) => {
+          const userid = JSON.parse(data);
+
+          StartStopCarsEngine(userid, "started")
+            .then((result) => {
+              animation(result.velocity, event.target, true);
+              new Winner(result.velocity, event.target);
+            });
+          SwitchCasEnginetoDriveMode(userid)
+            .then((result) => {
+              console.log(result);
+            })
+            .then()
+            .catch((err) => {
+              const { parentNode } = event.target;
+              parentNode.children[2].style.left = `${this.carBlockWidth}px`;
+              animation(0, event.target, false);
+            });
+        });
+      const { parentNode } = event.target.parentNode;
+      const carBlock = event.target.parentNode.children[2];
+
+      const x = setInterval(() => {
+        this.checkWin(parentNode.offsetWidth, carBlock.offsetLeft, nameCar);
+        if (this.winBlock.style.display === "block") {
+          setTimeout(() => {
+            this.winBlock.style.display = "none";
+          }, 2000);
+          clearInterval(x);
         }
-      }, 100);
-
-      carButtonB.addEventListener('click',(event) =>{
-        let parentNode = event.target.parentNode
-        clearInterval(x)
-        parentNode.children[2].style.left =  `0%`;
-        console.log('arres',this.arrRes);
-      })
-    })
- 
-    this.garageCount();
+      }, 1000);
+      carButtonB.addEventListener("click", (event) => {
+        carButtonB.classList.add("disable__button");
+        carButtonA.classList.remove("disable__button");
+        this.winBlock.style.display = "none";
+        clearInterval(x);
+        const { parentNode } = event.target;
+        parentNode.children[2].classList.remove("startAnumation");
+        parentNode.children[2].style.left = `${0}px`;
+      });
+    });
+    this.garageCount(true);
   }
-  pagination(){
-    this.paginationBlock.innerHTML = ''
-    let arrPage = []
-    let pageLength = this.page.children.length
-    
-    let i = 1
-    while(pageLength > 7){
-      arrPage.push(i)
-      i++;
-      pageLength = pageLength - 7
+
+  checkWin(width, carBlock, nameCar) {
+    this.carBlockWidth = carBlock;
+    if (carBlock >= width - (width / 10)) {
+      winnerCarArr.push(nameCar);
+      if (winnerCarArr.length > 1) {
+        for (let i = 0; i < winnerCarArr.length; i += 1)winnerCarArr.splice(i);
+        return;
+      }
+      this.winBlock.innerHTML = `${winnerCarArr[winnerCarArr.length - 1]} WINS!!!`;
+      this.winBlock.style.display = "block";
     }
-    arrPage.forEach((el)=>{
-      let pageNumber = document.createElement('div');
-      pageNumber.className = 'page__number'
-      pageNumber.innerHTML = el
-      this.paginationBlock.appendChild(pageNumber)
-    })
-  
-    console.log(arrPage);
   }
-  appendSVG(color){
-    let svgStr = `<svg version="1.1" id="Capa_1" width="40px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+
+  checkPagination() {
+    this.paginationBlock.innerHTML = "";
+    const arrPage = [];
+    let pageLength = this.page.children.length;
+
+    let i = 1;
+    while (pageLength > 7) {
+      arrPage.push(i);
+      i += 1;
+      pageLength -= 7;
+      if (pageLength < 7) {
+        arrPage.push(i);
+      }
+    }
+
+    arrPage.forEach((el) => {
+      const pageNumber = document.createElement("div");
+      pageNumber.className = "page__number";
+      pageNumber.innerHTML = el;
+      this.paginationBlock.appendChild(pageNumber);
+    });
+  }
+
+  pagination() {
+    this.paginationBlock.innerHTML = "";
+    const arrPage = [];
+    let pageLength = this.page.children.length;
+    let i = 1;
+    while (pageLength > 7) {
+      arrPage.push(i);
+      i += 1;
+      pageLength -= 7;
+      if (pageLength < 7) {
+        arrPage.push(i);
+      }
+    }
+
+    arrPage.forEach((el) => {
+      const pageNumber = document.createElement("div");
+      pageNumber.className = "page__number";
+      pageNumber.innerHTML = el;
+      this.paginationBlock.appendChild(pageNumber);
+    });
+    for (let i = 0; i < this.page.children.length; i += 1) {
+      if (i >= 7) {
+        this.page.children[i].classList.add("hide");
+      }
+    }
+    this.paginationBlock.addEventListener("click", (event) => {
+      const buttonB = document.querySelectorAll(".car__block-buttonB");
+      for (let i = 0; i < buttonB.length; i += 1) {
+        buttonB[i].click();
+      }
+      if (event.target.className === "page__number") {
+        const pageCount = document.querySelector(".page-count");
+        const numberPage = Number(event.target.innerHTML);
+        pageCount.innerHTML = numberPage;
+        if (numberPage === 1) {
+          for (let i = 0; i < this.page.children.length; i += 1) {
+            if (i >= 7) {
+              this.page.children[i].classList.add("hide");
+            } else {
+              this.page.children[i].classList.remove("hide");
+            }
+          }
+        } else {
+          for (let i = 0; i < this.page.children.length; i += 1) {
+            if (i >= 7 * (numberPage - 1) && i <= 7 * numberPage - 1) {
+              this.page.children[i].classList.remove("hide");
+            } else {
+              this.page.children[i].classList.add("hide");
+            }
+          }
+        }
+      }
+    });
+  }
+
+  appendSVG(color) {
+    const svgStr = `<svg version="1.1" id="Capa_1" width="40px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
     viewBox="0 0 404.243 404.243" style="enable-background:new 0 0 404.243 404.243;" xml:space="preserve">
  <g>
    <path style="fill:${color};" d="M394.444,252.603l-4.552-0.091v-15.73c3.752-1.441,6.421-5.069,6.421-9.329
@@ -187,11 +278,12 @@ export default class Car{
      l-8.761-11.738l0.001,0.001c-12.25-16.415-31.008-26.409-51.466-27.419c-0.164-0.008-0.329-0.012-0.493-0.012H171.34
      c-5.522,0-10,4.477-10,10v35.15C161.34,181.101,165.817,185.578,171.34,185.578z M181.34,150.428h18.087
      c12.53,0.679,24.146,6.123,32.632,15.15H181.34V150.428z"/>
- </svg>`
- return svgStr
+ </svg>`;
+    return svgStr;
   }
-  appendSvgFlag(){
-    let str = `<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+
+  appendSvgFlag() {
+    const str = `<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
     width="37.979px" height="37.979px" viewBox="0 0 37.979 37.979" style="enable-background:new 0 0 37.979 37.979;"
     xml:space="preserve">
  <g>
@@ -212,46 +304,136 @@ export default class Car{
      c-2.046-0.751-3.95-1.005-5.772-0.964c-0.508-1.792-1.016-3.583-1.521-5.375c1.82-0.041,3.727,0.213,5.771,0.964
      C33.817,14.739,34.326,16.53,34.833,18.322z"/>
  </g>
- </svg>`
- return str
+ </svg>`;
+    return str;
   }
-  garageCount(){
-    let garageCount = document.querySelector('.garage-count')
-    let count = Number(garageCount.innerHTML)
-    count++
+
+  garageCount(flag) {
+    const garageCount = document.querySelector(".garage-count");
+    let count = Number(garageCount.innerHTML);
+    if (flag) {
+      count += 1;
+    } else {
+      count += 1;
+    }
     garageCount.innerHTML = count;
-    
   }
-  removeBlockCar(block){
-    console.log('remove');
+
+  removeBlockCar(block) {
+    const nextNode = block.parentNode.parentNode.nextSibling;
+    this.checkNextSibling(nextNode);
+
     block.parentNode.parentNode.remove();
+    const nameCar = block.parentNode.children[2].innerHTML;
+    const colorCar = block.parentNode.parentNode.children[1].children[2].children[0]
+      .children[0].children[0].style.fill;
+    const color = `#${this.getHexRGBColor(colorCar)}`;
+    removeCar(nameCar, color);
   }
-  disabledUpdate() {
-    let nameCarUpdate = document.querySelector('.name__car-update')
-    let colorCarUpdate = document.querySelector('.color__car-update')
-    let buttonUpdate = document.querySelector('.button__update')
-    nameCarUpdate.disabled = !nameCarUpdate.disabled
-    colorCarUpdate.disabled = !colorCarUpdate.disabled
-    buttonUpdate.disabled = !buttonUpdate.disabled
+
+  checkNextSibling(nextNode) {
+    if (nextNode == null) {
+      return;
+    }
+    if (nextNode.className === "car__block hide") {
+      nextNode.className = "car__block";
+    } else {
+      this.checkNextSibling(nextNode.nextSibling);
+    }
   }
-  updateButton(){
-    const page = document.querySelector('.page')
-    let nameCarUpdate = document.querySelector('.name__car-update')
-    let colorCarUpdate = document.querySelector('.color__car-update')
-    for (let i = 0; i < page.children.length; i++) {
-      if(page.children[i].className == 'car__block active') {
-        if (nameCarUpdate.value == ''){
-          alert('Entry name car!')
-          return
+
+  updateButton() {
+    const page = document.querySelector(".page");
+    const nameCarUpdate = document.querySelector(".name__car-update");
+    const colorCarUpdate = document.querySelector(".color__car-update");
+    for (let i = 0; i < page.children.length; i += 1) {
+      if (page.children[i].className === "car__block active") {
+        if (nameCarUpdate.value === "") {
+          alert("Entry name car!");
+          return;
         }
+        const nameCar = page.children[i].children[0].children[2].innerHTML;
+        const colorCar = page.children[i].children[1].children[2].children[0].children[0]
+          .children[0].style.fill;
+        updateCar(nameCar, this.getHexRGBColor(colorCar));
         page.children[i].children[0].children[2].innerHTML = nameCarUpdate.value;
-        page.children[i].children[1].children[2].children[0].children[0].children[0].style.fill = colorCarUpdate.value
-        page.children[i].children[1].children[2].children[0].children[0].children[1].style.fill = colorCarUpdate.value
-        page.children[i].children[1].children[2].children[0].children[0].children[2].style.fill = colorCarUpdate.value
+        page.children[
+          i
+        ].children[1].children[2].children[0].children[0].children[0].style.fill = colorCarUpdate.value;
+        page.children[
+          i
+        ].children[1].children[2].children[0].children[0].children[1].style.fill = colorCarUpdate.value;
+        page.children[
+          i
+        ].children[1].children[2].children[0].children[0].children[2].style.fill = colorCarUpdate.value;
       }
     }
   }
-  getRandom(min,max){
+
+  async createCar() {
+    const url = "http://127.0.0.1:3000/garage";
+
+    const dataParams = {
+      name: this.nameCar,
+      color: this.colorCar,
+    };
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataParams),
+    });
+    const result = await response.json();
+  }
+
+  async writeWinner(winner) {
+    const url = "http://127.0.0.1:3000/winners";
+
+    const dataParams = {
+      wins: 1,
+      time: winner.time,
+      name: winner.name,
+      car: winner.carSvg,
+    };
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataParams),
+    });
+    const result = await response.json();
+  }
+
+  disabledUpdate() {
+    const nameCarUpdate = document.querySelector(".name__car-update");
+    const colorCarUpdate = document.querySelector(".color__car-update");
+    const buttonUpdate = document.querySelector(".button__update");
+    nameCarUpdate.disabled = !nameCarUpdate.disabled;
+    colorCarUpdate.disabled = !colorCarUpdate.disabled;
+    buttonUpdate.disabled = !buttonUpdate.disabled;
+  }
+
+  getHexRGBColor(color) {
+    color = color.replace(/\s/g, "");
+    const aRGB = color.match(
+      /^rgb\((\d{1,3}[%]?),(\d{1,3}[%]?),(\d{1,3}[%]?)\)$/i,
+    );
+    if (aRGB) {
+      color = "";
+      for (let i = 1; i <= 3; i += 1) {
+        color += Math.round(
+          (aRGB[i][aRGB[i].length - 1] === "%" ? 2.55 : 1) * parseInt(aRGB[i], 10),
+        )
+          .toString(16)
+          .replace(/^(.)$/, "0$1");
+      }
+    } else color = color.replace(/^#?([\da-f])([\da-f])([\da-f])$/i, "$1$1$2$2$3$3");
+    return color;
+  }
+
+  getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   }
 }

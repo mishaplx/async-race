@@ -1,79 +1,132 @@
-import Car from './car.js';
-import {data, dataNameCar} from './data.js';
-export default class Garage{
-  constructor(){
-    this.data = data;
-    this.buttonCreate = document.querySelector('.button__create')
-    this.inputNameCarCreate = document.querySelector('.name__car-create')
-    this.inputColorCarCreate = document.querySelector('.color__car-create')
-    this.updateButton = document.querySelector('.button__update')
-    this.generateButton = document.querySelector('.button-menu-generate')
-    this.raceButton = document.querySelector('.button-menu-race')
-    this.resetButton = document.querySelector('.button-menu-reset')
-    this.page = document.querySelector('.page')
-    this.buttonCreate.addEventListener('click', () =>{
+/* eslint-disable no-param-reassign */
+/* eslint-disable consistent-return */
+/* eslint-disable no-new */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-alert */
+import Car from "./car.js";
+import { dataNameCar, dataNameCar2 } from "./data.js";
+
+export default class Garage {
+  constructor(state) {
+    this.state = state;
+    this.renderState(this.state);
+    this.buttonCreate = document.querySelector(".button__create");
+    this.inputNameCarCreate = document.querySelector(".name__car-create");
+    this.inputColorCarCreate = document.querySelector(".color__car-create");
+    this.updateButton = document.querySelector(".button__update");
+    this.generateButton = document.querySelector(".button-menu-generate");
+    this.raceButton = document.querySelector(".button-menu-race");
+    this.resetButton = document.querySelector(".button-menu-reset");
+    this.winBlock = document.querySelector(".win");
+    this.page = document.querySelector(".page");
+    this.garage = document.querySelector(".garage");
+    this.winnersButton = document.querySelector(".button__view-winner");
+    this.winnersBlock = document.querySelector(".winners");
+    this.garageButton = document.querySelector(".button__view-garage");
+    this.inpUpdate = document.querySelector(".input__update");
+    this.inpCreate = document.querySelector(".input__create");
+    this.buttonMenu = document.querySelector(".button-menu");
+    this.buttonCreate.addEventListener("click", () => {
       const colorCar = this.getColorCreate();
       const nameCar = this.getNameCreate();
       const car = new Car(nameCar, colorCar);
-     car.start();
-    })
-    this.generateButton.addEventListener('click', () =>{
-      let i = 5;
-      while(i !== 0){
-        const car = new Car(dataNameCar[this.getRandomName(0, dataNameCar.length)] ,`rgb(${this.getRandomColor(0,255)},${this.getRandomColor(0,255)},${this.getRandomColor(0,255)})`);
-        i--
+      this.inputNameCarCreate.value = "";
+      car.createCar();
+    });
+    this.generateButton.addEventListener("click", () => {
+      let i = 100;
+      while (i !== 0) {
+        const color = `rgb(${Math.floor(this.getRandomColor(0, 255))},${Math.floor(this.getRandomColor(0, 255))},${Math.floor(this.getRandomColor(0, 255))})`;
+        const car = new Car(`${dataNameCar[this.getRandomName(0, dataNameCar.length)]}-${dataNameCar2[this.getRandomName(0, dataNameCar2.length)]}`, `#${this.getHexRGBColor(color)}`);
+        car.createCar();
+        i -= 1;
       }
-      
-    })
-    this.raceButton.addEventListener('click', () =>{
-      if (!this.page.children.length){
-        alert('Create car')
+    });
+    this.raceButton.addEventListener("click", (event) => {
+      if (!this.page.children.length) {
+        alert("Create car");
+      } else {
+        this.raceAll(event.target);
       }
-      else{
-        this.raceAll();
-      }
-
-    })
-    this.resetButton.addEventListener('click', () =>{
+    });
+    this.resetButton.addEventListener("click", () => {
       this.resetAll();
-    })
-   
+      this.winBlock.style.display = "none";
+    });
+    this.winnersButton.addEventListener("click", () => {
+      this.garage.style.display = "none";
+      this.inpUpdate.style.display = "none";
+      this.inpCreate.style.display = "none";
+      this.buttonMenu.style.display = "none";
+      this.winnersBlock.style.display = "block";
+    });
+    this.garageButton.addEventListener("click", () => {
+      this.garage.style.display = "block";
+      this.inpUpdate.style.display = "block";
+      this.inpCreate.style.display = "block";
+      this.buttonMenu.style.display = "block";
+      this.winnersBlock.style.display = "none";
+      this.resetAll();
+    });
   }
-  
-raceAll(){
-  const buttonA = document.querySelectorAll('.car__block-buttonA')
-  for (let i = 0; i < buttonA.length; i++) {
-    buttonA[i].click();
-    
+
+  renderState(state) {
+    state.forEach((el) => {
+      new Car(el.name, el.color);
+    });
   }
-}
-resetAll(){
-  const buttonB = document.querySelectorAll('.car__block-buttonB')
-  for (let i = 0; i < buttonB.length; i++) {
-    buttonB[i].click();
-    
+
+  getHexRGBColor(color) {
+    color = color.replace(/\s/g, "");
+    const aRGB = color.match(
+      /^rgb\((\d{1,3}[%]?),(\d{1,3}[%]?),(\d{1,3}[%]?)\)$/i,
+    );
+    if (aRGB) {
+      color = "";
+      for (let i = 1; i <= 3; i += 1) {
+        color += Math.round(
+          (aRGB[i][aRGB[i].length - 1] === "%" ? 2.55 : 1) * parseInt(aRGB[i], 10),
+        )
+          .toString(16)
+          .replace(/^(.)$/, "0$1");
+      }
+    } else { color = color.replace(/^#?([\da-f])([\da-f])([\da-f])$/i, "$1$1$2$2$3$3"); }
+    return color;
   }
-}
-getRandomColor(min,max){
-  return Math.random() * (max - min) + min;
-}
-getRandomName(min,max){
-  return Math.floor(Math.random() * (max - min) + min);
-}
-  
-getColorCreate(){
+
+  raceAll() {
+    const buttonA = document.querySelectorAll(".car__block-buttonA");
+    for (let i = 0; i < buttonA.length; i += 1) {
+      if (buttonA[i].parentNode.parentNode.className === "car__block") {
+        buttonA[i].click();
+      }
+    }
+  }
+
+  resetAll() {
+    const buttonB = document.querySelectorAll(".car__block-buttonB");
+    for (let i = 0; i < buttonB.length; i += 1) {
+      buttonB[i].click();
+    }
+  }
+
+  getRandomColor(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  getRandomName(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  getColorCreate() {
     return this.inputColorCarCreate.value;
   }
-getNameCreate(){
-    if(!!this.inputNameCarCreate.value.length){
+
+  getNameCreate() {
+    if (this.inputNameCarCreate.value.length) {
       return this.inputNameCarCreate.value;
     }
-    else{
-      alert('Entry name car!')
-    }
-  }
-getRandomCarName(){
 
-}
-  
+    alert("Entry name car!");
+  }
 }

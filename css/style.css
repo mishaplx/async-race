@@ -19,6 +19,10 @@ input:input {
   border: 0;
 }
 
+.hide {
+  display: none;
+}
+
 .active {
   border: 1px solid #fd0303;
 }
@@ -140,6 +144,10 @@ input[type="text"] {
   position: relative;
 }
 
+.svg__car svg {
+  margin-bottom: -10px;
+}
+
 .flag__block {
   position: absolute;
   top: 0;
@@ -156,5 +164,58 @@ input[type="text"] {
   color: #00ccff;
   margin: 0px 3px;
   cursor: pointer;
+}
+
+.table th {
+  border: 1px solid white;
+  background-color: #27c2d6;
+  padding: 5px;
+}
+
+.table th p {
+  margin: 0px;
+}
+
+.startAnumation {
+  -webkit-animation-name: slidein;
+          animation-name: slidein;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-timing-function: linear;
+          animation-timing-function: linear;
+}
+
+@-webkit-keyframes slidein {
+  from {
+    left: 0%;
+  }
+  to {
+    left: 90%;
+  }
+}
+
+@keyframes slidein {
+  from {
+    left: 0%;
+  }
+  to {
+    left: 90%;
+  }
+}
+
+.win {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #11ff09;
+  font-size: 26px;
+  font-weight: 600;
+  text-shadow: #FC0 1px 0 10px;
+}
+
+.disable__button {
+  background-color: black;
+  border: 1px solid #636363;
+  color: #636363;
 }
 /*# sourceMappingURL=style.css.map */

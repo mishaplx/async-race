@@ -16,6 +16,9 @@ input{
     border: 0;
   }
 }
+.hide{
+  display: none;
+}
 .active{
   border: 1px solid rgb(253, 3, 3);
 }
@@ -119,6 +122,9 @@ $colorblueButtonActive: rgb(66, 116, 117);
 .svg__car{
   display: inline-block;
   position: relative;
+  svg{
+    margin-bottom: -10px;
+  }
 }
 .flag__block{
   position: absolute;
@@ -132,4 +138,49 @@ $colorblueButtonActive: rgb(66, 116, 117);
   color: rgb(0, 204, 255);
   margin: 0px 3px;
   cursor: pointer;
+}
+.table{
+
+    th{
+     
+      border: 1px solid rgb(255, 255, 255);
+      background-color:rgb(39, 194, 214);
+      padding: 5px;
+      p{
+        margin: 0px;
+      }
+    }
+  
+  
+}
+.startAnumation{
+  
+  animation-name: slidein;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear; 
+}
+@keyframes slidein {
+  from {
+    left: 0%;
+   
+  }
+
+  to {
+    left: 90%;
+    
+  }
+}
+.win{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #11ff09;
+  font-size: 26px;
+  font-weight: 600;
+  text-shadow: #FC0 1px 0 10px;;
+}
+.disable__button{
+  background-color: black;
+  border: 1px solid #636363;
+  color: #636363;
 }
